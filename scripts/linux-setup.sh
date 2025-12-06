@@ -4,6 +4,9 @@ if [[ $1 == "deb" ]]; then
     sudo apt install ripgrep ninja-build gettext cmake build-essential git curl golang-go npm
 elif [[ $1 == "arch" ]]; then
     sudo pacman -S ripgrep ninja-build gettext cmake build-essential git curl go
+else
+    echo "No supported architecture provided."
+    exit
 fi
 
 #setup dotnet sdks
@@ -14,7 +17,7 @@ mkdir -p "$HOME/.dotnet"
 sudo "$HOME/tmp/dotnet-install.sh" --install-dir "$HOME/.dotnet" -channel 8.0 -version latest
 sudo "$HOME/tmp/dotnet-install.sh" --install-dir "$HOME/.dotnet" -channel 10.0 -version latest
 
-#setup lazygit
+#lazygit install
 lazygitDir=$HOME/tmp/lazygit
 git clone "https://github.com/jesseduffield/lazygit.git" "$lazygitDir"
 cd "$lazygitDir" || exit
@@ -40,6 +43,7 @@ fi
 echo "Cleaning up temp folder"
 rm -rf "$HOME/tmp"
 
+#turn this into wezterm?
 #update tmux
 if command -v tmux &>/dev/null; then
     echo "tmux already installed"
@@ -68,7 +72,10 @@ fi
 
 #copy config
 echo "Copying Config"
-cp -a "$ENV_SETUP/config/." "$HOME/.config" || exit
+cp -a "$ENV_SETUP/config/lazygit" "$HOME/.config/lazygit/" || exit
+cp -a "$ENV_SETUP/config/nvim" "$HOME/.config/nvim/" || exit
+cp -a "$ENV_SETUP/config/tmux" "$HOME/.config/tmux/" || exit
+cp -a "$ENV_SETUP/config/zsh" "$HOME/.config/zsh/" || exit
 mv "$HOME/.config/zsh/.zshenv" "$HOME" || exit
 
 #update tmux plugins

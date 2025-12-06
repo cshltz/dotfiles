@@ -13,7 +13,6 @@ return {
         'vim',
         'vimdoc',
         'c_sharp',
-        'razor',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

@@ -131,8 +131,8 @@ prompt_purification_setup() {
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
     prompt_git_branch
-    RPROMPT='$(prompt_git_info) $(git_prompt_status)'
-    PROMPT=$'%F{red}%n%F{white}:%~ %B%F{red}>%f%b '
+    RPROMPT='%F{green}%F{white}:%~ $(prompt_git_info) $(git_prompt_status)'
+    PROMPT=$'%F{red}%n %B%F{red}󰅂%f%b '
 }
 
 prompt_purification_setup
