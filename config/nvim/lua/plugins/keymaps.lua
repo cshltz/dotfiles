@@ -31,11 +31,11 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 -- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<ESC>:w<ENTER>', { desc = 'Save file and enter normal mode' })
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<ESC>:w<ENTER>', { desc = 'Save' })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
-vim.keymap.set('n', '<leader>Y', [["+Y]])
-vim.keymap.set('x', '<leader>p', [["_dP]])
-vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d')
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = 'Yank' })
+vim.keymap.set('n', '<leader>Y', [["+Y]], { desc = 'Yank Line' })
+vim.keymap.set('x', '<leader>p', [["_dP]], { desc = 'Paste' })
+vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Blackhole Delete' })
 
 -- vim: ts=2 sts=2 sw=2 et

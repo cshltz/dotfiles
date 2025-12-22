@@ -17,10 +17,14 @@ Write-Output "Install curl"
 winget install --id curl.curl --source winget
 Write-Output "Install ripgrep"
 winget install --id BurntSushi.ripgrep.MSVC --source winget
+Write-Output "Install fd"
+winget install -- sharkdp.fd --source winget
 Write-Output "Install go"
 winget install --id golang.go --source winget
 Write-Output "Install node"
 winget install --id OpenJS.NodeJS --source winget
+Write-Output "Install treesitter"
+npm install -g tree-sitter-cli
 Write-Output "Install neovim"
 winget install --id Neovim.Neovim --source winget
 Write-Output "Install pwsh"

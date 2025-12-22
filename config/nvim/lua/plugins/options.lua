@@ -3,7 +3,11 @@
 --  For more options, you can see `:help option-list`
 
 -- set shell type
-vim.opt.shell = 'pwsh'
+if vim.fn.has 'win32' or vim.fkn.has 'win64' then
+  vim.opt.shell = 'pwsh'
+else
+  vim.opt.shell = '/bin/zsh'
+end
 
 -- Make line numbers default
 vim.opt.number = true

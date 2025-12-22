@@ -26,7 +26,8 @@ alias grs='git remote show'
 alias glo='git log --pretty="oneline"'
 alias glol='git log --graph --oneline --decorate'
 
-alias vi=nvim_open
+alias vi='nvim'
+alias vh=nvim_open
 alias vicd=nvim_cd_open
 alias cdvi=nvim_cd_open
 

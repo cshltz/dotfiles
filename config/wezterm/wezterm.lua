@@ -109,6 +109,16 @@ tabline.apply_to_config(config)
 
 config.keys = {
   {
+    key = 'Tab',
+    mods = 'CTRL',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
+  {
+    key = 'Tab',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTabRelative(1),
+  },
+  {
     key = 'F11',
     action = wezterm.action.ToggleFullScreen,
   },

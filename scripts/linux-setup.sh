@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $1 == "deb" ]]; then
-    sudo apt install ripgrep ninja-build gettext cmake build-essential git curl golang-go npm
+    sudo apt install ripgrep ninja-build gettext cmake build-essential git curl golang-go npm fd-find treesitter-cli
 elif [[ $1 == "arch" ]]; then
     sudo pacman -S ripgrep ninja-build gettext cmake build-essential git curl go
 else

@@ -1,7 +1,0 @@
-return {
-  {
-    'nvim-mini/mini.notify',
-    lazy = true,
-    opts = {},
-  },
-}
