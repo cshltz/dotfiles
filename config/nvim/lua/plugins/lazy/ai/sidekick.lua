@@ -2,24 +2,47 @@ return {
   {
     'folke/sidekick.nvim',
     enabled = false,
-    opts = {
-      -- add any options here
-      -- cli = {
-      --   mux = {
-      --     backend = 'zellij',
-      --     enabled = true,
-      --   },
-      -- },
-    },
+    lazy = false,
+    config = function()
+      -- only set this when using ai tools
+      vim.lsp.inline_completion.enable(false)
+
+      require('sidekick').setup {
+        --   -- add any options here
+        --   -- cli = {
+        --   --   mux = {
+        --   --     backend = 'zellij',
+        --   --     enabled = true,
+        --   --   },
+        --   -- },
+      }
+    end,
     keys = {
+      {
+        '<leader>tc',
+        function()
+          vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
+          vim.b.completion = not vim.lsp.inline_completion.is_enabled()
+
+          vim.notify(string.format('Inline Compltion set to %s', tostring(vim.lsp.inline_completion.is_enabled())))
+        end,
+        mode = { 'n' },
+        expr = true,
+        desc = 'Completions',
+      },
       {
         '<tab>',
         function()
           -- if there is a next edit, jump to it, otherwise apply it if any
           if not require('sidekick').nes_jump_or_apply() then
-            return '<Tab>' -- fallback to normal tab
+            if vim.lsp.inline_completion.is_enabled() then
+              return vim.lsp.inline_completion.get()
+            else
+              return '<Tab>'
+            end
           end
         end,
+        mode = { 'i', 'n' },
         expr = true,
         desc = 'Goto/Apply Next Edit Suggestion',
       },
@@ -32,17 +55,16 @@ return {
         mode = { 'n', 't', 'i', 'x' },
       },
       {
-        '<leader>aa',
+        '<leader>ta',
         function()
-          require('sidekick.cli').toggle()
+          require('sidekick.cli').toggle { filter = { installed = true } }
         end,
-        desc = 'Sidekick Toggle CLI',
+        desc = 'Sidekick CLI',
       },
       {
         '<leader>as',
         function()
           require('sidekick.cli').select { filter = { installed = true } }
-          -- require('sidekick.cli').select()
         end,
         desc = 'Select CLI',
       },

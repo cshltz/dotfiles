@@ -18,7 +18,7 @@ winget install --id curl.curl --source winget
 Write-Output "Install ripgrep"
 winget install --id BurntSushi.ripgrep.MSVC --source winget
 Write-Output "Install fd"
-winget install -- sharkdp.fd --source winget
+winget install --id sharkdp.fd --source winget
 Write-Output "Install go"
 winget install --id golang.go --source winget
 Write-Output "Install node"
@@ -34,8 +34,12 @@ winget install --id Microsoft.DotNet.SDK.8 --source winget
 Write-Output "Install dotnet 10"
 winget install --id Microsoft.DotNet.SDK.10 --source winget
 
-Write-Output "Cleaning Existing Files"
+Write-Output "Install Copilot"
+winget install --id GitHub.Copilot
+Write-Output "Install Codex"
+npm install -g @openai/codex
 
+Write-Output "Cleaning Existing Files"
 $weztermPath ="$HOME/.wezterm.lua"
 $pwshPath = "$HOME/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 $nvimPath = "$HOME/AppData/Local/nvim/"

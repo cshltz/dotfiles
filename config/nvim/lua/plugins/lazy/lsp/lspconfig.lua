@@ -4,15 +4,7 @@ return {
     enabled = true,
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      {
-        'mason-org/mason.nvim',
-        opts = {
-          registries = {
-            'github:mason-org/mason-registry',
-            -- 'github:Crashdummyy/mason-registry',
-          },
-        },
-      },
+      { 'mason-org/mason.nvim', opts = {} },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       { 'j-hui/fidget.nvim', opts = {} },
@@ -97,8 +89,6 @@ return {
         },
       }
 
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-
       local servers = {
         clangd = {},
         gopls = {},
@@ -118,6 +108,7 @@ return {
             },
           },
         },
+        -- copilot = {},
       }
 
       local debuggers = {
@@ -138,6 +129,8 @@ return {
       vim.list_extend(ensure_installed, debuggers)
       vim.list_extend(ensure_installed, linters)
       vim.list_extend(ensure_installed, formatters)
+
+      vim.keymap.set('n', '<leader>um', '<cmd>MasonToolsInstall<cr>', { desc = 'Mason Tools' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
@@ -145,12 +138,7 @@ return {
         automatic_installation = false,
         handlers = {
           function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            vim.lsp.enable(server_name)
           end,
         },
       }

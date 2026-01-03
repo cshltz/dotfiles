@@ -1,6 +1,6 @@
 require('lazy').setup({
   spec = {
-    -- { import = 'plugins.lazy.ai' },
+    { import = 'plugins.lazy.ai' },
     { import = 'plugins.lazy.editor' },
     { import = 'plugins.lazy.git' },
     { import = 'plugins.lazy.lsp' },

@@ -1,9 +1,9 @@
 return {
   {
     'akinsho/toggleterm.nvim',
-    enabled = false,
     version = '*',
-    lazy = false,
+    enabled = true,
+    event = 'VeryLazy',
     opts = {
       direction = 'vertical',
       size = vim.o.columns * 0.6,

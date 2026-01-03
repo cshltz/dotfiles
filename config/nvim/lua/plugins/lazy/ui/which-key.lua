@@ -55,6 +55,7 @@ return {
         { '<leader>tu', group = '[U]I' },
         { '<leader>tG', group = '[G]it', mode = { 'n', 'v' } },
         { '<leader>tr', group = '[Tr]ouble' },
+        { '<leader>u', group = '[U]pdate' },
       },
     },
   },
