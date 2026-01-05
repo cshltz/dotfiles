@@ -24,7 +24,7 @@ return {
           vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
           vim.b.completion = not vim.lsp.inline_completion.is_enabled()
 
-          vim.notify(string.format('Inline Compltion set to %s', tostring(vim.lsp.inline_completion.is_enabled())))
+          vim.notify(string.format('Inline Completion set to %s', tostring(vim.lsp.inline_completion.is_enabled())))
         end,
         mode = { 'n' },
         expr = true,

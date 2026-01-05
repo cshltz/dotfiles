@@ -7,7 +7,11 @@ return {
     cmd = { 'Dotnet', 'DotnetTest', 'DotnetBuild' },
     ft = { 'cs', 'csproj' },
     config = function()
-      require('easy-dotnet').setup()
+      require('easy-dotnet').setup {
+        lsp = {
+          enabled = false,
+        },
+      }
 
       vim.keymap.set('n', '<leader>dnd', function()
         vim.cmd 'Dotnet debug default profile'
