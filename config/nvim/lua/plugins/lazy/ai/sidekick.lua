@@ -15,6 +15,17 @@ return {
         --   --     enabled = true,
         --   --   },
         --   -- },
+        cli = {
+          win = {
+            layout = 'right',
+            split = {
+              width = math.floor(vim.o.columns * 0.6),
+            },
+          },
+        },
+        nes = {
+          enabled = false,
+        },
       }
     end,
     keys = {
@@ -22,6 +33,7 @@ return {
         '<leader>tc',
         function()
           vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
+          require('sidekick.nes').enable(vim.lsp.inline_completion.is_enabled())
           vim.b.completion = not vim.lsp.inline_completion.is_enabled()
 
           vim.notify(string.format('Inline Completion set to %s', tostring(vim.lsp.inline_completion.is_enabled())))
