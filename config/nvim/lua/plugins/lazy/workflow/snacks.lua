@@ -14,6 +14,9 @@ return {
         },
         explorer = {
           auto_close = true,
+          layout = {
+            preset = 'default',
+          },
           win = {
             list = {
               keys = {
