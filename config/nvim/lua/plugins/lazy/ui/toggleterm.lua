@@ -2,7 +2,7 @@ return {
   {
     'akinsho/toggleterm.nvim',
     version = '*',
-    enabled = true,
+    enabled = false,
     event = 'VeryLazy',
     opts = {
       direction = 'vertical',

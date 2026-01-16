@@ -63,17 +63,19 @@ return {
     input = {},
     quickfile = {},
     layout = {},
-    -- terminal = {},
+    terminal = {
+      shell = 'pwsh',
+    },
     statuscolumn = {},
     words = {},
     styles = {
       notification = {
         wo = { wrap = true }, -- Wrap notifications
       },
-      -- terminal = {
-      --   width = 0.6,
-      --   position = 'right',
-      -- },
+      terminal = {
+        width = 0.6,
+        position = 'right',
+      },
       lazygit = {
         width = 0.8,
       },
@@ -553,13 +555,13 @@ return {
     --   end,
     --   desc = 'Terminal',
     -- },
-    -- {
-    --   '<leader>tt',
-    --   function()
-    --     Snacks.terminal.toggle()
-    --   end,
-    --   desc = 'Terminal',
-    -- },
+    {
+      '<leader>tt',
+      function()
+        Snacks.terminal.toggle()
+      end,
+      desc = 'Terminal',
+    },
     {
       ']]',
       function()

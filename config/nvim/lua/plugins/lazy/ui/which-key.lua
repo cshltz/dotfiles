@@ -41,7 +41,7 @@ return {
 
       spec = {
         { '<leader>d', group = '[D]ebug' },
-        { '<leader>dn', group = '[D]ot[n]et' },
+        { '<leader>D', group = '[D]otnet' },
         { '<leader>dg', group = '[D]ia[g]nostic' },
         { '<leader>b', group = '[B]reakpoint' },
         { '<leader>s', group = '[S]earch' },
