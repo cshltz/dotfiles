@@ -2,9 +2,8 @@ return {
   {
     'GustavEikaas/easy-dotnet.nvim',
     enabled = true,
-    dependencies = { 'nvim-lua/plenary.nvim', 'folke/snacks.nvim' },
     lazy = false,
-    cmd = { 'Dotnet', 'DotnetTest', 'DotnetBuild' },
+    dependencies = { 'nvim-lua/plenary.nvim', 'folke/snacks.nvim' },
     config = function()
       require('easy-dotnet').setup {}
 
@@ -27,6 +26,9 @@ return {
       vim.keymap.set('n', '<leader>Ds', function()
         dotnet.solution_select()
       end, { nowait = true, desc = 'Select Solution' })
+      vim.keymap.set('n', '<leader>Dlr', function()
+        dotnet.lsp_restart()
+      end, { nowait = true, desc = 'Restart' })
     end,
   },
 }

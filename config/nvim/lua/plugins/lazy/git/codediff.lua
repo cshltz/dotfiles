@@ -12,7 +12,7 @@ return {
       },
     },
     config = function()
-      require('vscode-diff').setup {
+      require('codediff').setup {
         diff = {
           conflict_ours_position = 'left',
         },

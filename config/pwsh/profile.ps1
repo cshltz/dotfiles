@@ -327,6 +327,11 @@ Set-PSReadLineKeyHandler -Key RightArrow `
     }
 }
 
+Import-Module Posh-Git
+Import-Module PowerColorLS
+Import-Module Pscx
+Import-Module PSReadLine
+
 Function cdd
 {
     Set-Location -Path D:\dev\proj
@@ -346,18 +351,26 @@ Function nvimHere($arg1)
     }
 }
 
-Import-Module Posh-Git
-Import-Module PowerColorLS
-Import-Module Pscx
-Import-Module PSReadLine
-
-function LSNoIcons
+Function LSNoIcons
 {
     PowerColorLS --hide-icons @args
 }
+
+Function rmrf($arg1)
+    {
+    Remove-Item $arg1 -Recurse -Force
+
+}
+
+Function rmf($arg1)
+{
+    Remove-Item $arg1 -Force
+}
+
 Set-Alias -Name ls -Value LSNoIcons -Option AllScope
 Set-Alias -Name vi -Value nvim
 Set-Alias -Name vh -Value nvimHere
+Set-Alias -Name touch -Value ni
 
 function prompt
 {
