@@ -1,7 +1,7 @@
 return {
   {
     'folke/sidekick.nvim',
-    enabled = false,
+    enabled = true,
     lazy = false,
     config = function()
       -- only set this when using ai tools
@@ -20,6 +20,9 @@ return {
             layout = 'right',
             split = {
               width = math.floor(vim.o.columns * 0.6),
+            },
+            keys = {
+              prompt = false,
             },
           },
         },
