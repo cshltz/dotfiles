@@ -8,6 +8,15 @@ return {
     explorer = {},
     picker = {
       hidden = true,
+      win = {
+        input = {
+          keys = {
+            ['<a-j>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+            ['<a-k>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
+            ['<c-b>'] = { 'list_scroll_down', mode = { 'i', 'n' } },
+          },
+        },
+      },
       sources = {
         files = {
           hidden = true,
@@ -749,17 +758,16 @@ return {
           git_pickaxe { global = true }
         end, { desc = 'Git Search (Global)' })
 
+        vim.keymap.set({ 'n', 't' }, '<leader>Gl', function()
+          Snacks.picker.git_log {
+            confirm = walk_in_codediff,
+          }
+        end, { desc = 'Git Log Repo' })
         vim.keymap.set({ 'n', 't' }, '<leader>Gf', function()
           Snacks.picker.git_log_file {
             confirm = walk_in_codediff,
           }
         end, { desc = 'Git Log File' })
-
-        vim.keymap.set({ 'n', 't' }, '<leader>Gl', function()
-          Snacks.picker.git_log {
-            confirm = walk_in_codediff,
-          }
-        end, { desc = 'Git Log' })
       end,
     })
   end,
