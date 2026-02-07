@@ -32,8 +32,8 @@ return {
         end
       end,
       formatters_by_ft = {
-        cs = { 'cs_formatter' },
-        csproj = { 'cs_formatter' },
+        cs = { lsp_format = 'first' },
+        csproj = { lsp_format = 'first' },
         lua = { 'stylua' },
         yaml = { 'yamlfix' },
         yml = { 'yamlfix' },

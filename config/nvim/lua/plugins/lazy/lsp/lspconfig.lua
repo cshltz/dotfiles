@@ -159,6 +159,7 @@ return {
         'stylua',
         'prettier',
         'csharpier',
+        'yamlfix',
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
