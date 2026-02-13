@@ -24,9 +24,9 @@ return {
             keys = {
               prompt = false,
             },
-            tools = {
-              codex = { cmd = { 'codex' } },
-            },
+          },
+          tools = {
+            codex = { cmd = { 'codex' } },
           },
         },
         nes = {
