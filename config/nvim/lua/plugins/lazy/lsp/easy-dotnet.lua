@@ -29,6 +29,9 @@ return {
       vim.keymap.set('n', '<leader>Dlr', function()
         dotnet.lsp_restart()
       end, { nowait = true, desc = 'Restart' })
+      vim.keymap.set('n', '<leader>Dp', function()
+        dotnet.project_view()
+      end, { nowait = true, desc = 'Projects' })
     end,
   },
 }
