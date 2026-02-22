@@ -18,6 +18,7 @@ return {
         'vim',
         'vimdoc',
         'c_sharp',
+        'powershell',
       }
 
       local no_i_parsers = {

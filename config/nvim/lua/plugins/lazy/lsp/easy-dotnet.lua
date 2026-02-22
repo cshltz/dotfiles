@@ -5,7 +5,29 @@ return {
     lazy = false,
     dependencies = { 'nvim-lua/plenary.nvim', 'folke/snacks.nvim' },
     config = function()
-      require('easy-dotnet').setup {}
+      require('easy-dotnet').setup {
+        lsp = {
+          enabled = true,
+          preload_roslyn = true,
+          roslynator_enabled = true,
+          easy_dotnet_analyzer_enabled = true,
+          auto_refresh_codelens = true,
+          analyzer_assemblies = {},
+          config = {
+            settings = {
+              -- ['csharp|background_analysis'] = {
+              --   dotnet_compiler_diagnostics_scope = 'fullSolution',
+              -- },
+              ['csharp|inlay_hints'] = {
+                csharp_enable_inlay_hints_for_implicit_object_creation = true,
+              },
+              ['csharp|code_lens'] = {
+                dotnet_enable_references_code_lens = true,
+              },
+            },
+          },
+        },
+      }
 
       local dotnet = require 'easy-dotnet'
       vim.keymap.set('n', '<leader>Db', function()

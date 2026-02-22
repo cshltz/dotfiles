@@ -332,9 +332,22 @@ Import-Module PowerColorLS
 Import-Module Pscx
 Import-Module PSReadLine
 
-Function cdd
+Function cdd($arg1)
 {
-    Set-Location -Path D:\dev\proj
+    $basePath = "D:\dev\proj"
+    if($arg1)
+    {
+        if(Test-Path "$basePath\$arg1")
+        {
+            Set-Location -Path "$basePath\$arg1"
+        }else
+        {
+            Set-Location -Path $basePath
+        }
+    } else
+    {
+        Set-Location -Path $basePath
+    }
 }
 
 Function nvimHere($arg1)
