@@ -26,6 +26,8 @@ Set-PSReadLineKeyHandler -Key Ctrl+b `
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
 
+Set-PSReadlineOption -Colors @{ Parameter = 'Blue'}
+
 # In Emacs mode - Tab acts like in bash, but the Windows style completion
 # is still useful sometimes, so bind some keys so we can do both
 Set-PSReadLineKeyHandler -Key Ctrl+q -Function TabCompleteNext
