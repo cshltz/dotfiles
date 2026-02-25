@@ -158,7 +158,7 @@ return {
       local formatters = {
         'stylua',
         'prettier',
-        'csharpier',
+        -- 'csharpier',
         'yamlfix',
       }
 

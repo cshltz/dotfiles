@@ -40,10 +40,9 @@ return {
       },
 
       spec = {
-        { '<leader>d', group = '[D]ebug' },
+        { '<leader>a', group = '[A]I' },
         { '<leader>D', group = '[D]otnet' },
         { '<leader>Dl', group = '[L]sp' },
-        { '<leader>dg', group = '[D]ia[g]nostic' },
         { '<leader>b', group = '[B]reakpoint' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>g', group = '[G]eneral' },
@@ -57,6 +56,8 @@ return {
         { '<leader>tG', group = '[G]it', mode = { 'n', 'v' } },
         { '<leader>tr', group = '[Tr]ouble' },
         { '<leader>u', group = '[U]pdate' },
+        { '<leader>m', group = '[M]arks' },
+        { '<leader>mm', group = 'Set [M]arks' },
       },
     },
   },

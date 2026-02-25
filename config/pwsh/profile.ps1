@@ -27,6 +27,7 @@ Set-PSReadLineKeyHandler -Key Ctrl+b `
 }
 
 Set-PSReadlineOption -Colors @{ Parameter = 'Blue'}
+Set-PSReadlineOption -Colors @{ Operator = 'Red'}
 
 # In Emacs mode - Tab acts like in bash, but the Windows style completion
 # is still useful sometimes, so bind some keys so we can do both

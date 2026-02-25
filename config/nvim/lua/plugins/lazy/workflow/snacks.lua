@@ -397,14 +397,14 @@ return {
       function()
         Snacks.picker.lsp_incoming_calls()
       end,
-      desc = 'Incoming',
+      desc = 'Goto Incoming Calls',
     },
     {
       '<leader>gco',
       function()
         Snacks.picker.lsp_outgoing_calls()
       end,
-      desc = 'Outgoing',
+      desc = 'Goto Outgoing Calls',
     },
     {
       '<leader>ss',
