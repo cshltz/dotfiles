@@ -51,9 +51,15 @@ return {
       vim.keymap.set('n', '<leader>nlr', function()
         dotnet.lsp_restart()
       end, { nowait = true, desc = 'Restart' })
-      vim.keymap.set('n', '<leader>np', function()
+      vim.keymap.set('n', '<leader>npp', function()
         dotnet.project_view()
-      end, { nowait = true, desc = 'Projects' })
+      end, { nowait = true, desc = 'Project View' })
+      vim.keymap.set('n', '<leader>npa', function()
+        dotnet.add_package()
+      end, { nowait = true, desc = 'Add Package' })
+      vim.keymap.set('n', '<leader>npr', function()
+        dotnet.remove_package()
+      end, { nowait = true, desc = 'Remove Package' })
     end,
   },
 }
