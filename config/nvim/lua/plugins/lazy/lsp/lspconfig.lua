@@ -150,7 +150,6 @@ return {
       local debuggers = {
         'delve',
         'codelldb',
-        'netcoredbg',
       }
 
       local linters = {}
