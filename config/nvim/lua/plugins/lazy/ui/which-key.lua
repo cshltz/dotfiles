@@ -41,7 +41,6 @@ return {
 
       spec = {
         { '<leader>a', group = '[A]I' },
-        { '<leader>D', group = '[D]otnet' },
         { '<leader>Dl', group = '[L]sp' },
         { '<leader>b', group = '[B]reakpoint' },
         { '<leader>s', group = '[S]earch' },
@@ -50,7 +49,8 @@ return {
         { '<leader>Gh', group = '[G]it[H]ub', mode = { 'n', 'v' } },
         { '<leader>o', group = '[O]pen' },
         { '<leader>f', group = '[F]ind' },
-        { '<leader>n', group = '[N]otifications' },
+        { '<leader>n', group = '[N]ET' },
+        { '<leader>N', group = '[N]otifications' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>tu', group = '[U]I' },
         { '<leader>tG', group = '[G]it', mode = { 'n', 'v' } },

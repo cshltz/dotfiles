@@ -589,44 +589,26 @@ return {
     },
     -- Notifications
     {
-      '<leader>nh',
+      '<leader>Nn',
       function()
         Snacks.picker.notifications()
       end,
-      desc = 'Notification History',
+      desc = 'Notifications',
     },
     {
-      '<leader>nh',
+      '<leader>Nh',
       function()
         Snacks.notifier.show_history()
       end,
       desc = 'Notification History',
     },
     {
-      '<leader>nd',
+      '<leader>Nd',
       function()
         Snacks.notifier.hide()
       end,
       desc = 'Dismiss All Notifications',
     },
-    -- {
-    --   '<leader>N',
-    --   desc = 'Neovim News',
-    --   function()
-    --     Snacks.win {
-    --       file = vim.api.nvim_get_runtime_file('doc/news.txt', false)[1],
-    --       width = 0.6,
-    --       height = 0.6,
-    --       wo = {
-    --         spell = false,
-    --         wrap = false,
-    --         signcolumn = 'yes',
-    --         statuscolumn = ' ',
-    --         conceallevel = 3,
-    --       },
-    --     }
-    --   end,
-    -- },
   },
   init = function()
     vim.api.nvim_create_autocmd('User', {
