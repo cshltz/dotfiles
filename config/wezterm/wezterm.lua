@@ -114,6 +114,14 @@ config.keys = {
     action = wezterm.action.DisableDefaultAssignment,
   },
   {
+    key = 'h',
+    mods = 'CTRL',
+    action = wezterm.action.SendKey {
+      key = 'h',
+      mods = 'CTRL',
+    },
+  },
+  {
     key = 'Tab',
     mods = 'LEADER',
     action = wezterm.action.ActivateTabRelative(1),
