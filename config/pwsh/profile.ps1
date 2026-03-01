@@ -331,9 +331,26 @@ Set-PSReadLineKeyHandler -Key RightArrow `
 }
 
 Import-Module Posh-Git
-Import-Module PowerColorLS
 Import-Module Pscx
 Import-Module PSReadLine
+
+function Test-IsInteractiveShell{
+    try {
+        return (
+            $Host.Name -eq 'ConsoleHost' -and
+            -not [Console]::IsInputRedirected -and
+            -not [Console]::IsOutputRedirected -and
+            -not [Console]::IsErrorRedirected
+        )
+    } catch {
+        return false;
+    }
+}
+
+if (Test-IsInteractiveShell){
+    Import-Module PowerColorLS -ErrorAction SilentlyContinue
+    Import-Module Terminal-Icons -ErrorAction SilentlyContinue
+}
 
 Function cdd($arg1)
 {
@@ -369,7 +386,12 @@ Function nvimHere($arg1)
 
 Function LSNoIcons
 {
-    PowerColorLS --hide-icons @args
+    if (Get-Command PowerColorLS -ErrorAction SilentlyContinue){
+        PowerColorLS --hide-icons @args
+    }
+    else{
+        Get-ChildItem @args
+    }
 }
 
 Function rmrf($arg1)
