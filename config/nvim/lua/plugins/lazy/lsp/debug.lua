@@ -31,16 +31,10 @@ return {
       dapview.setup {
         winbar = {
           show = true,
-          -- You can add a "console" section to merge the terminal with the other views
           sections = { 'watches', 'scopes', 'exceptions', 'breakpoints', 'threads', 'repl' },
-          -- Must be one of the sections declared above
           default_section = 'watches',
-          -- Append hints with keymaps within the labels
           show_keymap_hints = true,
-          -- Configure each section individually
           base_sections = {
-            -- Labels can be set dynamically with functions
-            -- Each function receives the window's width and the current section as arguments
             breakpoints = { label = 'Breakpoints', keymap = 'B' },
             scopes = { label = 'Scopes', keymap = 'S' },
             exceptions = { label = 'Exceptions', keymap = 'E' },
@@ -50,7 +44,6 @@ return {
             sessions = { label = 'Sessions', keymap = 'K' },
             console = { label = 'Console', keymap = 'C' },
           },
-          -- Add your own sections
           custom_sections = {},
           controls = {
             enabled = false,
@@ -74,7 +67,6 @@ return {
           terminal = {
             size = 0.5,
             position = 'left',
-            -- List of debug adapters for which the terminal should be ALWAYS hidden
             hide = {},
           },
         },
@@ -99,12 +91,8 @@ return {
           border = nil,
         },
         render = {
-          -- Optionally a function that takes two `dap.Variable`'s as arguments
-          -- and is forwarded to a `table.sort` when rendering variables in the scopes view
           sort_variables = nil,
-          -- Full control of how frames are rendered, see the "Custom Formatting" page
           threads = {
-            -- Choose which items to display and how
             format = function(name, lnum, path)
               return {
                 { part = name, separator = ' ' },
@@ -112,12 +100,9 @@ return {
                 { part = lnum, hl = 'LineNumber' },
               }
             end,
-            -- Align columns
             align = false,
           },
-          -- Full control of how breakpoints are rendered, see the "Custom Formatting" page
           breakpoints = {
-            -- Choose which items to display and how
             format = function(line, lnum, path)
               return {
                 { part = path, hl = 'FileName' },
@@ -125,7 +110,6 @@ return {
                 { part = line, hl = true },
               }
             end,
-            -- Align columns
             align = false,
           },
         },
@@ -139,7 +123,7 @@ return {
         -- Alternatively, can be a string:
         -- - "keep_terminal": as above, but keeps the terminal when the session finishes
         -- - "open_term": open the terminal when starting a new session, nothing else
-        auto_toggle = false,
+        auto_toggle = true,
         -- Reopen dapview when switching to a different tab
         -- Can also be a function to dynamically choose when to follow, by returning a boolean
         -- If a function, receives the name of the adapter for the current session as an argument

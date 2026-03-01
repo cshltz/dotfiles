@@ -99,20 +99,6 @@ return {
       end,
       desc = 'Smart Find Files',
     },
-    -- {
-    --   '<leader>,',
-    --   function()
-    --     Snacks.picker.buffers()
-    --   end,
-    --   desc = 'Buffers',
-    -- },
-    -- {
-    --   '<leader>/',
-    --   function()
-    --     Snacks.picker.grep()
-    --   end,
-    --   desc = 'Grep',
-    -- },
     {
       '<leader>:',
       function()
@@ -258,14 +244,14 @@ return {
       desc = 'Commands',
     },
     {
-      '<leader>sd',
+      '<leader>sD',
       function()
         Snacks.picker.diagnostics()
       end,
-      desc = 'Diagnostics',
+      desc = 'Global Diagnostics',
     },
     {
-      '<leader>sD',
+      '<leader>sd',
       function()
         Snacks.picker.diagnostics_buffer()
       end,
