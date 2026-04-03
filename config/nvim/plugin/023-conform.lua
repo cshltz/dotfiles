@@ -1,6 +1,6 @@
-vim.pack.add({ 'https://github.com/stevearc/conform.nvim' })
+vim.pack.add { 'https://github.com/stevearc/conform.nvim' }
 
-require('conform').setup({
+require('conform').setup {
   async = true,
   notify_on_error = false,
   format_on_save = function(bufnr)
@@ -27,7 +27,7 @@ require('conform').setup({
       to_stdin = true,
     },
   },
-})
+}
 
 vim.keymap.set('n', '<leader>=', function()
   require('conform').format { async = true, lsp_format = 'fallback' }

@@ -1,8 +1,8 @@
-vim.pack.add({ 'https://github.com/mfussenegger/nvim-dap' })
-vim.pack.add({ 'https://github.com/igorlfs/nvim-dap-view' })
-vim.pack.add({ 'https://github.com/nvim-neotest/nvim-nio' })
-vim.pack.add({ 'https://github.com/jay-babu/mason-nvim-dap.nvim' })
-vim.pack.add({ 'https://github.com/leoluz/nvim-dap-go' })
+vim.pack.add { 'https://github.com/mfussenegger/nvim-dap' }
+vim.pack.add { 'https://github.com/igorlfs/nvim-dap-view' }
+vim.pack.add { 'https://github.com/nvim-neotest/nvim-nio' }
+vim.pack.add { 'https://github.com/jay-babu/mason-nvim-dap.nvim' }
+vim.pack.add { 'https://github.com/leoluz/nvim-dap-go' }
 
 vim.api.nvim_create_autocmd('VimEnter', {
   once = true,
@@ -44,7 +44,14 @@ vim.api.nvim_create_autocmd('VimEnter', {
             enabled = false,
             position = 'right',
             buttons = {
-              'play', 'step_into', 'step_over', 'step_out', 'step_back', 'run_last', 'terminate', 'disconnect',
+              'play',
+              'step_into',
+              'step_over',
+              'step_out',
+              'step_back',
+              'run_last',
+              'terminate',
+              'disconnect',
             },
             custom_buttons = {},
           },
@@ -55,9 +62,21 @@ vim.api.nvim_create_autocmd('VimEnter', {
           terminal = { size = 0.5, position = 'left', hide = {} },
         },
         icons = {
-          collapsed = '󰅂 ', disabled = '', disconnect = '', enabled = '', expanded = '󰅀 ',
-          filter = '󰈲', negate = ' ', pause = '', play = '', run_last = '',
-          step_back = '', step_into = '', step_out = '', step_over = '', terminate = '',
+          collapsed = '󰅂 ',
+          disabled = '',
+          disconnect = '',
+          enabled = '',
+          expanded = '󰅀 ',
+          filter = '󰈲',
+          negate = ' ',
+          pause = '',
+          play = '',
+          run_last = '',
+          step_back = '',
+          step_into = '',
+          step_out = '',
+          step_over = '',
+          terminate = '',
         },
         help = { border = nil },
         render = {

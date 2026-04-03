@@ -1,20 +1,33 @@
-vim.pack.add({ 'https://github.com/nvim-treesitter/nvim-treesitter' })
-vim.pack.add({ 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' })
+vim.pack.add { 'https://github.com/nvim-treesitter/nvim-treesitter' }
+vim.pack.add { 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' }
 
 vim.api.nvim_create_autocmd('PackChanged', {
   callback = function(ev)
     local name = ev.data.spec.name
     local kind = ev.data.kind
     if name == 'nvim-treesitter' and kind == 'update' then
-      if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
-      vim.cmd('TSUpdate')
+      if not ev.data.active then
+        vim.cmd.packadd 'nvim-treesitter'
+      end
+      vim.cmd 'TSUpdate'
     end
   end,
 })
 
 local parsers = {
-  'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown',
-  'markdown_inline', 'query', 'vim', 'vimdoc', 'c_sharp', 'powershell',
+  'bash',
+  'c',
+  'diff',
+  'html',
+  'lua',
+  'luadoc',
+  'markdown',
+  'markdown_inline',
+  'query',
+  'vim',
+  'vimdoc',
+  'c_sharp',
+  'powershell',
 }
 
 local no_i_parsers = { 'c_sharp' }
@@ -34,7 +47,9 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function(args)
     local buf, filetype = args.buf, args.match
     local language = vim.treesitter.language.get_lang(filetype)
-    if not language then return end
+    if not language then
+      return
+    end
 
     local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
     if vim.tbl_contains(installed_parsers, language) then
@@ -52,14 +67,14 @@ vim.api.nvim_create_autocmd('FileType', {
 require('nvim-treesitter').install(parsers)
 
 vim.g.no_plugin_maps = true
-require('nvim-treesitter-textobjects').setup({
+require('nvim-treesitter-textobjects').setup {
   lookahead = true,
   selection_modes = {
     ['@parameter.outer'] = 'v',
     ['@function.outer'] = 'V',
   },
   include_surrounding_whitespace = false,
-})
+}
 
 local tsselect = require 'nvim-treesitter-textobjects.select'
 vim.keymap.set({ 'x', 'o' }, 'am', function()

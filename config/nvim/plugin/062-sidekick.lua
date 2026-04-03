@@ -1,8 +1,8 @@
-vim.pack.add({ 'https://github.com/folke/sidekick.nvim' })
+vim.pack.add { 'https://github.com/folke/sidekick.nvim' }
 
 vim.lsp.inline_completion.enable(false)
 
-require('sidekick').setup({
+require('sidekick').setup {
   cli = {
     win = {
       layout = 'right',
@@ -16,7 +16,7 @@ require('sidekick').setup({
     },
   },
   nes = { enabled = false },
-})
+}
 
 vim.keymap.set('n', '<leader>tc', function()
   vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
