@@ -6,23 +6,11 @@ vim.g.maplocalleader = ' '
 
 vim.deprecate = function() end
 
--- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- [[ Setting options ]]
-require 'plugins.options'
-
--- [[ Basic Keymaps ]]
-require 'plugins.keymaps'
-
--- [[ Basic Autocommands ]]
-require 'plugins.autocmds'
-
--- [[ Install `lazy.nvim` plugin manager ]]
-require 'plugins.lazy'
-
--- [[ Configure and install plugins ]]
-require 'plugins.lazy-plugins'
+require 'options'
+require 'keymaps'
+require 'autocmds'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
