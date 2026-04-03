@@ -32,14 +32,21 @@ local parsers = {
 
 local no_i_parsers = { 'c_sharp' }
 
+local treesitter_runtime = vim.fs.joinpath(vim.fn.stdpath('data'), 'site/pack/core/opt/nvim-treesitter/runtime')
+vim.opt.rtp:prepend(treesitter_runtime)
+
 local function treesitter_try_attach(buf, language)
+  vim.cmd.packadd 'nvim-treesitter'
+  vim.cmd.packadd 'nvim-treesitter-textobjects'
+  
   if not vim.treesitter.language.add(language) then
     return
   end
+  
   vim.treesitter.start(buf, language)
   vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
   if not vim.tbl_contains(no_i_parsers, language) then
-    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    vim.bo.indentexpr = 'v:lua.vim.treesitter.indentexpr(buf)'
   end
 end
 
@@ -50,45 +57,48 @@ vim.api.nvim_create_autocmd('FileType', {
     if not language then
       return
     end
+    treesitter_try_attach(buf, language)
+  end,
+})
 
-    local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
-    if vim.tbl_contains(installed_parsers, language) then
-      treesitter_try_attach(buf, language)
-    elseif vim.tbl_contains(require('nvim-treesitter').get_available(), language) then
-      require('nvim-treesitter').install(language):await(function()
-        treesitter_try_attach(buf, language)
-      end)
-    else
-      treesitter_try_attach(buf, language)
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    vim.cmd.packadd 'nvim-treesitter'
+    local ok, ts = pcall(require, 'nvim-treesitter')
+    if ok then
+      ts.install(parsers)
     end
   end,
 })
 
-require('nvim-treesitter').install(parsers)
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    vim.cmd.packadd 'nvim-treesitter-textobjects'
+    vim.g.no_plugin_maps = true
+    require('nvim-treesitter-textobjects').setup {
+      lookahead = true,
+      selection_modes = {
+        ['@parameter.outer'] = 'v',
+        ['@function.outer'] = 'V',
+      },
+      include_surrounding_whitespace = false,
+    }
 
-vim.g.no_plugin_maps = true
-require('nvim-treesitter-textobjects').setup {
-  lookahead = true,
-  selection_modes = {
-    ['@parameter.outer'] = 'v',
-    ['@function.outer'] = 'V',
-  },
-  include_surrounding_whitespace = false,
-}
-
-local tsselect = require 'nvim-treesitter-textobjects.select'
-vim.keymap.set({ 'x', 'o' }, 'am', function()
-  tsselect.select_textobject('@function.outer', 'textobjects')
-end, { desc = 'method' })
-vim.keymap.set({ 'x', 'o' }, 'im', function()
-  tsselect.select_textobject('@function.inner', 'textobjects')
-end, { desc = 'method' })
-vim.keymap.set({ 'x', 'o' }, 'ac', function()
-  tsselect.select_textobject('@class.outer', 'textobjects')
-end, { desc = 'class' })
-vim.keymap.set({ 'x', 'o' }, 'ic', function()
-  tsselect.select_textobject('@class.inner', 'textobjects')
-end, { desc = 'class' })
-vim.keymap.set({ 'x', 'o' }, 'as', function()
-  tsselect.select_textobject('@local.scope', 'locals')
-end, { desc = 'scope' })
+    local tsselect = require 'nvim-treesitter-textobjects.select'
+    vim.keymap.set({ 'x', 'o' }, 'am', function()
+      tsselect.select_textobject('@function.outer', 'textobjects')
+    end, { desc = 'method' })
+    vim.keymap.set({ 'x', 'o' }, 'im', function()
+      tsselect.select_textobject('@function.inner', 'textobjects')
+    end, { desc = 'method' })
+    vim.keymap.set({ 'x', 'o' }, 'ac', function()
+      tsselect.select_textobject('@class.outer', 'textobjects')
+    end, { desc = 'class' })
+    vim.keymap.set({ 'x', 'o' }, 'ic', function()
+      tsselect.select_textobject('@class.inner', 'textobjects')
+    end, { desc = 'class' })
+    vim.keymap.set({ 'x', 'o' }, 'as', function()
+      tsselect.select_textobject('@local.scope', 'locals')
+    end, { desc = 'scope' })
+  end,
+})
