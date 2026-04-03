@@ -23,7 +23,7 @@ require('easy-dotnet').setup {
 
 local dotnet = require 'easy-dotnet'
 vim.keymap.set('n', '<leader>nb', function()
-  dotnet.build_solution()
+  dotnet.build_solution_quickfix()
 end, { nowait = true, desc = 'Build Solution' })
 vim.keymap.set('n', '<leader>nr', function()
   dotnet.run()
