@@ -32,17 +32,27 @@ local parsers = {
 
 local no_i_parsers = { 'c_sharp' }
 
-local treesitter_runtime = vim.fs.joinpath(vim.fn.stdpath('data'), 'site/pack/core/opt/nvim-treesitter/runtime')
+local treesitter_runtime = vim.fs.joinpath(vim.fn.stdpath 'data', 'site/pack/core/opt/nvim-treesitter/runtime')
 vim.opt.rtp:prepend(treesitter_runtime)
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    vim.cmd.packadd 'nvim-treesitter'
+    local ok, ts = pcall(require, 'nvim-treesitter')
+    if ok then
+      ts.install(parsers)
+    end
+  end,
+})
 
 local function treesitter_try_attach(buf, language)
   vim.cmd.packadd 'nvim-treesitter'
   vim.cmd.packadd 'nvim-treesitter-textobjects'
-  
+
   if not vim.treesitter.language.add(language) then
     return
   end
-  
+
   vim.treesitter.start(buf, language)
   vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
   if not vim.tbl_contains(no_i_parsers, language) then
@@ -58,16 +68,6 @@ vim.api.nvim_create_autocmd('FileType', {
       return
     end
     treesitter_try_attach(buf, language)
-  end,
-})
-
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    vim.cmd.packadd 'nvim-treesitter'
-    local ok, ts = pcall(require, 'nvim-treesitter')
-    if ok then
-      ts.install(parsers)
-    end
   end,
 })
 
