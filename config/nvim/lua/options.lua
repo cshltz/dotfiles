@@ -13,7 +13,7 @@
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 
 --move cmdline under statusline
 -- vim.opt.cmdheight = 0
@@ -64,6 +64,9 @@ vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
 vim.opt.cursorline = false
+
+-- fancy fill chars in diff.
+vim.opt.fillchars:append { diff = '╱' }
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
