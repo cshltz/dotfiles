@@ -17,7 +17,7 @@ require('diffview').setup {
   },
   file_panel = {
     listing_style = 'list',
-    win_config = { position = 'left', width = 'auto' },
+    win_config = { position = 'left', width = 35 },
   },
   hooks = {}, -- See :h diffview-config-hooks
   keymaps = {
@@ -80,7 +80,7 @@ require('diffview').setup {
       { 'n', 'o', actions.select_entry, { desc = 'Open the diff for the selected entry' } },
       { 'n', 'l', actions.select_entry, { desc = 'Open the diff for the selected entry' } },
       { 'n', '<2-LeftMouse>', actions.select_entry, { desc = 'Open the diff for the selected entry' } },
-      { { 'n', 'x' }, '<enter>', actions.toggle_select_entry, { desc = 'Toggle file selection for multi-file operations' } },
+      { { 'n', 'x' }, '<=>', actions.toggle_select_entry, { desc = 'Toggle file selection for multi-file operations' } },
       { 'n', 'C', actions.clear_select_entries, { desc = 'Clear all file selections' } },
       { 'n', '-', actions.toggle_stage_entry, { desc = 'Stage / unstage the selected entry' } },
       { 'n', 's', actions.toggle_stage_entry, { desc = 'Stage / unstage the selected entry' } },
