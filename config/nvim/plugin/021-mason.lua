@@ -20,8 +20,8 @@ local servers = {
     },
   },
   powershell_es = {},
+  pylsp = {},
   rust_analyzer = {},
-  ty = {},
 }
 
 local debuggers = { 'delve', 'codelldb' }
