@@ -7,11 +7,10 @@ require('mason').setup {}
 require('fidget').setup {}
 
 local servers = {
+  bashls = {},
   clangd = {},
   gopls = {},
-  pyright = {},
-  rust_analyzer = {},
-  bashls = {},
+  lemminx = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -20,6 +19,9 @@ local servers = {
       },
     },
   },
+  powershell_es = {},
+  rust_analyzer = {},
+  ty = {},
 }
 
 local debuggers = { 'delve', 'codelldb' }

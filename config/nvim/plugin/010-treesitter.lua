@@ -28,6 +28,7 @@ local parsers = {
   'vimdoc',
   'c_sharp',
   'powershell',
+  'python',
 }
 
 local no_i_parsers = { 'c_sharp' }
