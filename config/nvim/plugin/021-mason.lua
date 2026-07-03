@@ -26,7 +26,7 @@ local servers = {
 
 local debuggers = { 'delve', 'codelldb' }
 local linters = {}
-local formatters = { 'stylua', 'prettier', 'yamlfix' }
+local formatters = { 'stylua', 'prettier', 'yamlfix', 'ruff' }
 
 local ensure_installed = vim.tbl_keys(servers)
 vim.list_extend(ensure_installed, debuggers)
