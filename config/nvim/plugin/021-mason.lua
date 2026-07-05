@@ -20,7 +20,8 @@ local servers = {
     },
   },
   powershell_es = {},
-  pylsp = {},
+  pyright = {},
+  ruff = {},
   rust_analyzer = {},
 }
 

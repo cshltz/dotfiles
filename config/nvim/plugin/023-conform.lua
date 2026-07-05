@@ -1,5 +1,6 @@
 vim.pack.add { 'https://github.com/stevearc/conform.nvim' }
 
+require('conform').formatters.ruff_format = { append_args = { '--line-length', '120' } }
 require('conform').setup {
   async = true,
   notify_on_error = false,
@@ -18,7 +19,7 @@ require('conform').setup {
     yaml = { 'yamlfix' },
     yml = { 'yamlfix' },
     rust = { 'rustfmt', lsp_format = 'fallback' },
-    python = { 'isort', 'black' },
+    python = { 'ruff_format' },
   },
   formatters = {
     cs_formatter = {
