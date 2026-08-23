@@ -19,6 +19,9 @@ require('easy-dotnet').setup {
       },
     },
   },
+  test_runner = {
+    auto_start_testrunner = false,
+  },
 }
 
 local dotnet = require 'easy-dotnet'

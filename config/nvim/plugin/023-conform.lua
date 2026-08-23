@@ -9,17 +9,17 @@ require('conform').setup {
     if disable_filetypes[vim.bo[bufnr].filetype] then
       return nil
     else
-      return { timeout_ms = 500, lsp_format = 'fallback' }
+      return { timeout_ms = 2000, lsp_format = 'fallback' }
     end
   end,
   formatters_by_ft = {
     cs = { lsp_format = 'first' },
     csproj = { lsp_format = 'first' },
     lua = { 'stylua' },
-    yaml = { 'yamlfix' },
-    yml = { 'yamlfix' },
+    yaml = { 'yamlfmt' },
+    yml = { 'yamlfmt' },
     rust = { 'rustfmt', lsp_format = 'fallback' },
-    python = { 'ruff_format' },
+    -- python = { 'ruff_format' },
   },
   formatters = {
     cs_formatter = {

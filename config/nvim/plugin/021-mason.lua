@@ -21,13 +21,12 @@ local servers = {
   },
   powershell_es = {},
   pyright = {},
-  ruff = {},
   rust_analyzer = {},
 }
 
 local debuggers = { 'delve', 'codelldb' }
 local linters = {}
-local formatters = { 'stylua', 'prettier', 'yamlfix', 'ruff' }
+local formatters = { 'stylua', 'prettier', 'yamlfmt' }
 
 local ensure_installed = vim.tbl_keys(servers)
 vim.list_extend(ensure_installed, debuggers)
