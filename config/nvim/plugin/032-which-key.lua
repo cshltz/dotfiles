@@ -45,7 +45,7 @@ require('which-key').setup {
     { '<leader>o', group = '[O]pen' },
     { '<leader>f', group = '[F]ind' },
     { '<leader>n', group = '[N]ET' },
-    { '<leader>nl', group = '[L]sp' },
+    { '<leader>l', group = '[L]sp' },
     { '<leader>np', group = '[P]roject' },
     { '<leader>N', group = '[N]otifications' },
     { '<leader>t', group = '[T]oggle' },

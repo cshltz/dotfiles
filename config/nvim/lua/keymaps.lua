@@ -34,4 +34,11 @@ vim.keymap.set('n', '<leader>Y', [["+Y]], { desc = 'Yank Line' })
 vim.keymap.set('x', '<leader>p', [["_dP]], { desc = 'Paste' })
 vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Blackhole Delete' })
 
+-- LSP
+vim.keymap.set('n', '<leader>lr', '<cmd>lsp restart<cr>', { desc = 'Restart' })
+vim.keymap.set('n', '<leader>lp', '<cmd>lsp stop<cr>', { desc = 'Stop' })
+vim.keymap.set('n', '<leader>ls', '<cmd>lsp start<cr>', { desc = 'Start' })
+vim.keymap.set('n', '<leader>le', '<cmd>lsp enable<cr>', { desc = 'Enable' })
+vim.keymap.set('n', '<leader>ld', '<cmd>lsp disable<cr>', { desc = 'Disable' })
+
 -- vim: ts=2 sts=2 sw=2 et
