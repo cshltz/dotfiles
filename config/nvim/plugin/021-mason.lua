@@ -21,6 +21,7 @@ local servers = {
   },
   powershell_es = {},
   pyright = {},
+  ruff = {},
   rust_analyzer = {},
 }
 

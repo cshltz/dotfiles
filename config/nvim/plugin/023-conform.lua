@@ -19,7 +19,7 @@ require('conform').setup {
     yaml = { 'yamlfmt' },
     yml = { 'yamlfmt' },
     rust = { 'rustfmt', lsp_format = 'fallback' },
-    -- python = { 'ruff_format' },
+    python = { 'ruff_format' },
   },
   formatters = {
     cs_formatter = {
