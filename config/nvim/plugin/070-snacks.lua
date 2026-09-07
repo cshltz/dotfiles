@@ -64,7 +64,7 @@ require('snacks').setup {
   words = {},
   styles = {
     notification = { wo = { wrap = true } },
-    terminal = { width = 0.6, position = 'right' },
+    terminal = { width = 0.4, position = 'right' },
     lazygit = { width = 0.8 },
   },
 }
@@ -239,9 +239,16 @@ end, { desc = 'Delete Buffer' })
 vim.keymap.set('n', '<leader>og', function()
   Snacks.lazygit()
 end, { desc = 'Lazygit' })
+
 vim.keymap.set('n', '<leader>tt', function()
   Snacks.terminal.toggle()
 end, { desc = 'Terminal' })
+vim.keymap.set('n', '<leader>ta', function()
+  Snacks.terminal.toggle 'codex'
+end, { desc = 'Codex' })
+vim.keymap.set('n', '<leader>tc', function()
+  Snacks.terminal.toggle 'copilot'
+end, { desc = 'Copilot' })
 
 vim.keymap.set({ 'n', 't' }, ']]', function()
   Snacks.words.jump(vim.v.count1)
@@ -359,3 +366,134 @@ end, { desc = 'Git Log Repo' })
 vim.keymap.set({ 'n', 't' }, '<leader>Gf', function()
   Snacks.picker.git_log_file { confirm = walk_in_codediff }
 end, { desc = 'Git Log File' })
+
+local function ai_terminal_sessions()
+  local sessions = {}
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local terminal = vim.b[buf].snacks_terminal
+    local cmd = terminal and terminal.cmd
+    local executable = type(cmd) == 'table' and cmd[1] or cmd
+    if (executable == 'codex' or executable == 'copilot') and vim.b[buf].terminal_job_id then
+      table.insert(sessions, {
+        buf = buf,
+        cmd = executable,
+        cwd = terminal.cwd or vim.fn.getcwd(),
+        job_id = vim.b[buf].terminal_job_id,
+      })
+    end
+  end
+  return sessions
+end
+
+local function send_ai_context(session, render_context)
+  -- Bracketed paste keeps newlines in interactive CLIs without submitting them.
+  local paste = '\027[200~\n' .. render_context(session) .. '\n\n\027[201~'
+  local ok, err = pcall(vim.api.nvim_chan_send, session.job_id, paste)
+  if not ok then
+    vim.notify(('Unable to send context to %s: %s'):format(session.cmd, err), vim.log.levels.ERROR)
+    return
+  end
+  vim.notify(('Added context to %s (%s)'):format(session.cmd, session.cwd))
+end
+
+local function select_ai_terminal(render_context)
+  local sessions = ai_terminal_sessions()
+  if #sessions == 0 then
+    vim.notify('No running Codex or Copilot Snacks terminal found', vim.log.levels.WARN)
+  elseif #sessions == 1 then
+    send_ai_context(sessions[1], render_context)
+  else
+    Snacks.picker.select(sessions, {
+      prompt = 'Add context to AI terminal',
+      format_item = function(session)
+        return ('%s — %s'):format(session.cmd, session.cwd)
+      end,
+    }, function(session)
+      if session then
+        send_ai_context(session, render_context)
+      end
+    end)
+  end
+end
+
+local function current_file_path()
+  local path = vim.api.nvim_buf_get_name(0)
+  return path ~= '' and vim.fs.normalize(vim.fn.fnamemodify(path, ':p')) or '[No Name]'
+end
+
+local function relative_path(path, cwd)
+  if path == '[No Name]' then
+    return path
+  end
+  return vim.fs.relpath(cwd, path) or path
+end
+
+local function location(path, cwd, start_pos, end_pos, kind)
+  local name = relative_path(path, cwd)
+  local start_row, start_col = start_pos[1], start_pos[2] + 1
+  if not end_pos then
+    return ('@%s :L%d:C%d'):format(name, start_row, start_col)
+  elseif kind == 'V' then
+    return start_row == end_pos[1] and ('@%s :L%d'):format(name, start_row) or ('@%s :L%d-L%d'):format(name, start_row, end_pos[1])
+  elseif start_row == end_pos[1] and start_col == end_pos[2] + 1 then
+    return ('@%s :L%d:C%d'):format(name, start_row, start_col)
+  elseif start_row == end_pos[1] then
+    return ('@%s :L%d:C%d-C%d'):format(name, start_row, start_col, end_pos[2] + 1)
+  end
+  return ('@%s :L%d:C%d-L%d:C%d'):format(name, start_row, start_col, end_pos[1], end_pos[2] + 1)
+end
+
+local function selected_context()
+  local start_pos = vim.fn.getpos "'<"
+  local end_pos = vim.fn.getpos "'>"
+  return {
+    path = current_file_path(),
+    start_pos = { start_pos[2], start_pos[3] - 1 },
+    end_pos = { end_pos[2], end_pos[3] - 1 },
+    kind = vim.fn.visualmode(),
+    text = table.concat(vim.fn.getregion(start_pos, end_pos, { type = vim.fn.visualmode() }), '\n'),
+  }
+end
+
+local function current_line_context()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  return { path = current_file_path(), start_pos = { cursor[1], cursor[2] } }
+end
+
+vim.keymap.set('n', '<leader>af', function()
+  Snacks.picker.files {
+    confirm = function(picker)
+      local items = picker:selected { fallback = true }
+      picker:close()
+      local paths = {}
+      for _, item in ipairs(items) do
+        if item.file then
+          table.insert(paths, vim.fs.normalize(vim.fn.fnamemodify(item.file, ':p')))
+        end
+      end
+      if #paths > 0 then
+        select_ai_terminal(function(session)
+          local references = {}
+          for _, path in ipairs(paths) do
+            table.insert(references, '@' .. relative_path(path, session.cwd))
+          end
+          return table.concat(references, ' ')
+        end)
+      end
+    end,
+  }
+end, { desc = 'Add Files to AI Context' })
+
+vim.keymap.set('n', '<leader>at', function()
+  local context = current_line_context()
+  select_ai_terminal(function(session)
+    return location(context.path, session.cwd, context.start_pos)
+  end)
+end, { desc = 'Add Position to AI Context' })
+
+vim.keymap.set('x', '<leader>at', function()
+  local context = selected_context()
+  select_ai_terminal(function(session)
+    return location(context.path, session.cwd, context.start_pos, context.end_pos, context.kind) .. '\n' .. context.text
+  end)
+end, { desc = 'Add Selection to AI Context' })
