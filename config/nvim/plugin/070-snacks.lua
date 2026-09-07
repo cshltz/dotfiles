@@ -59,7 +59,33 @@ require('snacks').setup {
   input = {},
   quickfile = {},
   layout = {},
-  terminal = { shell = 'pwsh' },
+  terminal = {
+    shell = 'pwsh',
+    win = {
+      keys = {
+        term_normal = {
+          '`',
+          function(self)
+            self.esc_timer = self.esc_timer or (vim.uv or vim.loop).new_timer()
+            if self.esc_timer:is_active() then
+              self.esc_timer:stop()
+              vim.cmd 'stopinsert'
+            else
+              local chan = vim.bo.channel
+              self.esc_timer:start(200, 0, function()
+                vim.schedule(function()
+                  vim.api.nvim_chan_send(chan, '`')
+                end)
+              end)
+            end
+          end,
+          mode = 't',
+          expr = true,
+          desc = 'Double backtick to normal mode',
+        },
+      },
+    },
+  },
   statuscolumn = {},
   words = {},
   styles = {
@@ -244,8 +270,8 @@ vim.keymap.set('n', '<leader>tt', function()
   Snacks.terminal.toggle()
 end, { desc = 'Terminal' })
 vim.keymap.set('n', '<leader>ta', function()
-  Snacks.terminal.toggle 'codex'
-end, { desc = 'Codex' })
+  Snacks.terminal.toggle 'opencode'
+end, { desc = 'Agent' })
 vim.keymap.set('n', '<leader>tc', function()
   Snacks.terminal.toggle 'copilot'
 end, { desc = 'Copilot' })
@@ -373,7 +399,7 @@ local function ai_terminal_sessions()
     local terminal = vim.b[buf].snacks_terminal
     local cmd = terminal and terminal.cmd
     local executable = type(cmd) == 'table' and cmd[1] or cmd
-    if (executable == 'codex' or executable == 'copilot') and vim.b[buf].terminal_job_id then
+    if (executable == 'codex' or executable == 'opencode' or executable == 'copilot') and vim.b[buf].terminal_job_id then
       table.insert(sessions, {
         buf = buf,
         cmd = executable,
@@ -399,7 +425,7 @@ end
 local function select_ai_terminal(render_context)
   local sessions = ai_terminal_sessions()
   if #sessions == 0 then
-    vim.notify('No running Codex or Copilot Snacks terminal found', vim.log.levels.WARN)
+    vim.notify('No running compatible agent Snacks terminal found', vim.log.levels.WARN)
   elseif #sessions == 1 then
     send_ai_context(sessions[1], render_context)
   else
