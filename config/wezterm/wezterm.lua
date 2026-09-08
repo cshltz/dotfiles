@@ -1,6 +1,10 @@
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 local tabline = wezterm.plugin.require 'https://github.com/michaelbrusegard/tabline.wez'
+local theme = require 'theme'
+
+local default_theme = theme.default_theme
+local tabline_theme = theme.copy(default_theme)
 
 config.default_prog = { 'pwsh.exe' }
 config.leader = { key = ' ', mods = 'CTRL' }
@@ -14,73 +18,11 @@ config.font = wezterm.font 'Cascadia Code NF'
 
 config.window_background_opacity = 1.0
 
-config.colors = {
-  -- foreground = '#c5c9c5',
-  -- background = '#1e1e1e',
-  -- cursor_bg = '#ffffff',
-  -- cursor_fg = '#000000',
-  -- selection_bg = '#444444',
-  -- selection_fg = '#ffffff',
-  --
-  -- -- ANSI colors
-  -- ansi = {
-  --   '#121214', -- black
-  -- '#F05988', -- red
-  -- '#32a852', -- lime
-  -- '#FFCB67', -- yellow
-  -- '#42a6f8', -- blue
-  -- '#d66fd7', -- fuchsia
-  -- '#4Ec9b2', -- aqua
-  -- '#dcdcdc', -- white
-  -- },
-  --
-  -- -- Bright ANSI colors
-  -- brights = {
-  --   '#2e2e2e', -- grey
-  -- '#F05988', -- red
-  -- '#32a852', -- lime
-  -- '#FFCB67', -- yellow
-  -- '#42a6f8', -- blue
-  -- '#d66fd7', -- fuchsia
-  -- '#4Ec9b2', -- aqua
-  -- '#dcdcdc', -- white
-  -- },
-
-  background = '#292d3e',
-  foreground = '#dcdcdc',
-  cursor_bg = '#c5c9c5',
-  cursor_fg = '#000000',
-  selection_fg = '#5e5f61',
-  selection_bg = '#444444',
-
-  -- ANSI colors
-  ansi = {
-    '#1b1e2b', -- black
-    '#f05988', -- maroon
-    '#32a852', -- green
-    '#ffcb67', -- olive
-    '#42a6f8', -- navy
-    '#d66fd7', -- purple
-    '#4Ec9b2', -- teal
-    '#dcdcdc', -- silver
-  },
-
-  -- Bright ANSI colors
-  brights = {
-    '#5e5f61', -- grey
-    '#F05988', -- red
-    '#32a852', -- lime
-    '#FFCB67', -- yellow
-    '#42a6f8', -- blue
-    '#d66fd7', -- fuchsia
-    '#4Ec9b2', -- aqua
-    '#dcdcdc', -- white
-  },
-}
+config.colors = theme.copy(default_theme)
 
 tabline.setup {
   options = {
-    theme = config.colors,
+    theme = tabline_theme,
   },
   sections = {
     tabline_a = {},
@@ -107,6 +49,21 @@ tabline.setup {
 }
 tabline.apply_to_config(config)
 
+wezterm.on('cycle-theme', function(window)
+  local name = theme.next_name()
+  local palette = theme.load(name)
+  for key, value in pairs(palette) do
+    tabline_theme[key] = value
+  end
+  tabline.set_theme()
+
+  local overrides = window:get_config_overrides() or {}
+  overrides.colors = theme.copy(name)
+  overrides.colors.tab_bar = { background = tabline.get_theme().normal_mode.c.bg }
+  window:set_config_overrides(overrides)
+  wezterm.log_info('active theme: ' .. name)
+end)
+
 config.keys = {
   {
     key = 'Tab',
@@ -125,6 +82,11 @@ config.keys = {
     key = 'Tab',
     mods = 'LEADER',
     action = wezterm.action.ActivateTabRelative(1),
+  },
+  {
+    key = 't',
+    mods = 'LEADER',
+    action = wezterm.action.EmitEvent 'cycle-theme',
   },
   {
     key = 'F11',

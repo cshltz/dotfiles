@@ -18,7 +18,13 @@ if(Test-Path $nvimPath)
 }
 
 Write-Output "Copying Wezterm"
-Copy-Item -Path "$Env:ENV_SETUP/config/wezterm/*.lua" -Destination "$HOME/.wezterm.lua" -Force
+$weztermConfigPath = "$HOME/.config/wezterm"
+if(Test-Path $weztermConfigPath)
+{
+    Remove-Item -Path $weztermConfigPath -Recurse -Force
+}
+New-Item -ItemType Directory -Path $weztermConfigPath -Force | Out-Null
+Copy-Item -Path "$Env:ENV_SETUP/config/wezterm/*" -Destination $weztermConfigPath -Recurse -Force
 Write-Output "Copying Pwsh"
 Copy-Item -Path "$Env:ENV_SETUP/config/pwsh/profile.ps1" -Destination $pwshPath -Force
 Write-Output "Copying nvim"

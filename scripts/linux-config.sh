@@ -2,7 +2,9 @@
 
 echo "Copying wezterm"
 rm -f "$HOME/.wezterm.lua"
-cp -a "$ENV_SETUP/config/wezterm/wezterm.lua" "$HOME/.wezterm.lua" || exit
+rm -rf "$XDG_CONFIG_HOME/wezterm"
+mkdir -p "$XDG_CONFIG_HOME/wezterm"
+cp -a "$ENV_SETUP/config/wezterm/." "$XDG_CONFIG_HOME/wezterm/" || exit
 
 echo "Copying nvim"
 rm -rf "$XDG_CONFIG_HOME/nvim"
