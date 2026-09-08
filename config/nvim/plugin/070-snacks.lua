@@ -61,6 +61,8 @@ require('snacks').setup {
   layout = {},
   terminal = {
     shell = 'pwsh',
+    start_insert = false,
+    auto_insert = false,
     win = {
       keys = {
         term_normal = {
@@ -486,7 +488,7 @@ local function current_line_context()
   return { path = current_file_path(), start_pos = { cursor[1], cursor[2] } }
 end
 
-vim.keymap.set('n', '<leader>af', function()
+vim.keymap.set('n', '<leader>ap', function()
   Snacks.picker.files {
     confirm = function(picker)
       local items = picker:selected { fallback = true }
@@ -509,6 +511,12 @@ vim.keymap.set('n', '<leader>af', function()
     end,
   }
 end, { desc = 'Add Files to AI Context' })
+
+vim.keymap.set('n', '<leader>af', function()
+  select_ai_terminal(function(session)
+    return '@' .. relative_path(current_file_path(), session.cwd)
+  end)
+end, { desc = 'Add Current File to AI Context' })
 
 vim.keymap.set('n', '<leader>at', function()
   local context = current_line_context()
