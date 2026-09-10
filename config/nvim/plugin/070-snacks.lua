@@ -51,7 +51,7 @@ require('snacks').setup {
       { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
     },
   },
-  lazygit = {},
+  lazygit = { start_insert = true },
   indent = {},
   scope = {},
   toggle = {},
@@ -528,6 +528,6 @@ end, { desc = 'Add Position to AI Context' })
 vim.keymap.set('x', '<leader>at', function()
   local context = selected_context()
   select_ai_terminal(function(session)
-    return location(context.path, session.cwd, context.start_pos, context.end_pos, context.kind) .. '\n' .. context.text
+    return location(context.path, session.cwd, context.start_pos, context.end_pos, context.kind)
   end)
 end, { desc = 'Add Selection to AI Context' })

@@ -29,6 +29,7 @@ local parsers = {
   'c_sharp',
   'powershell',
   'python',
+  'regex',
 }
 
 local no_i_parsers = { 'c_sharp' }
