@@ -525,7 +525,7 @@ vim.keymap.set('n', '<leader>at', function()
   end)
 end, { desc = 'Add Position to AI Context' })
 
-vim.keymap.set('x', '<leader>at', function()
+vim.keymap.set('x', '<leader>al', function()
   local context = selected_context()
   select_ai_terminal(function(session)
     return location(context.path, session.cwd, context.start_pos, context.end_pos, context.kind)
