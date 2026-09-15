@@ -1,18 +1,16 @@
 vim.pack.add { 'https://github.com/nvim-treesitter/nvim-treesitter' }
 vim.pack.add { 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' }
 
-vim.api.nvim_create_autocmd('PackChanged', {
-  callback = function(ev)
-    local name = ev.data.spec.name
-    local kind = ev.data.kind
-    if name == 'nvim-treesitter' and kind == 'update' then
-      if not ev.data.active then
-        vim.cmd.packadd 'nvim-treesitter'
-      end
-      vim.cmd 'TSUpdate'
+local pack_hooks = require 'pack-hooks'
+
+pack_hooks.hooks['nvim-treesitter'] = function(ev)
+  if ev.data.kind == 'update' then
+    if not ev.data.active then
+      vim.cmd.packadd 'nvim-treesitter'
     end
-  end,
-})
+    vim.cmd 'TSUpdate'
+  end
+end
 
 local parsers = {
   'bash',

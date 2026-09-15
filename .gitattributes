@@ -1,0 +1,7 @@
+# Most of this repo is deployed to WSL/Linux (zsh, nvim, shell scripts),
+# where CRLF breaks parsing. Pin every text file to LF by default so
+# checkouts are correct even with core.autocrlf=true on Windows.
+* text=auto eol=lf
+
+# Windows PowerShell files keep CRLF (host-only)
+*.ps1 text eol=crlf
