@@ -60,7 +60,7 @@ require('snacks').setup {
   quickfile = {},
   layout = {},
   terminal = {
-    shell = 'pwsh',
+    shell = 'zsh',
     start_insert = false,
     auto_insert = false,
     win = {

@@ -4,6 +4,7 @@ export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
 
 export PATH=$PATH:"$HOME/.dotnet"
 export PATH=$PATH:"$HOME/go/bin"
+export PATH=$PATH:"$HOME/.local/bin"
 
 export EDITOR="nvim"
 export VISUAL="nvim"

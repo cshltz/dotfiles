@@ -6,15 +6,14 @@ local theme = require 'theme'
 local default_theme = theme.default_theme
 local tabline_theme = theme.copy(default_theme)
 
-config.default_prog = { 'pwsh.exe' }
+-- config.default_prog = { 'pwsh.exe' }
+config.default_domain = 'WSL:Ubuntu-24.04'
 config.leader = { key = ' ', mods = 'CTRL' }
 
 config.initial_rows = 40
 config.initial_cols = 160
 config.font_size = 11
 config.font = wezterm.font 'Cascadia Code NF'
--- config.color_scheme = "Catppuccin Mocha"
--- config.color_scheme = 'Tokyo Night Storm'
 
 config.window_background_opacity = 1.0
 
