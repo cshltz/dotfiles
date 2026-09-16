@@ -34,13 +34,19 @@ echo "Installing copilot cli (npm)"
 sudo npm install -g @github/copilot
 
 echo "Installing dotnet SDKs (apt)"
+#dotnet SDK via apt - avoids the blocked dot.net / builds.dotnet.microsoft.com endpoints.
 if [[ $1 == "deb" ]]; then
     #.NET 8 is EOL and not in the 26.04 main repos - pull it from the dotnet/backports PPA
     #(also provides .NET 9; 10.0 is in the normal archive)
     sudo apt-get install -y software-properties-common
     sudo add-apt-repository -y ppa:dotnet/backports
     sudo apt-get update
-    sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
+    if ! sudo apt-cache policy dotnet-sdk-8.0 | grep -q 'Candidate:'; then
+        echo "ERROR: dotnet-sdk-8.0 is not in the apt index." >&2
+        echo "The dotnet/backports PPA did not resolve - check that https://ppa.launchpadcontent.net is reachable from this network, then re-run or add the PPA manually." >&2
+    else
+        sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
+    fi
 fi
 
 #update nvim
@@ -99,9 +105,13 @@ chsh -s /bin/zsh || echo "chsh failed - set your default shell later with: chsh 
 echo "Copying Config"
 mkdir -p "$HOME/.config/nvim"
 cp -a "$ENV_SETUP/config/nvim/." "$HOME/.config/nvim/" || exit
+#strip CRLF - a Windows checkout (core.autocrlf) copies \r\n and breaks sh/zsh
+find "$HOME/.config/nvim" -type f -exec sed -i 's/\r$//' {} +
 mkdir -p "$HOME/.config/zsh"
 cp -a "$ENV_SETUP/config/zsh/." "$HOME/.config/zsh/" || exit
+find "$HOME/.config/zsh" -type f -exec sed -i 's/\r$//' {} +
 mv -f "$HOME/.config/zsh/.zshenv" "$HOME" 2>/dev/null || true
+sed -i 's/\r$//' "$HOME/.zshenv" 2>/dev/null || true
 
 #update zsh plugins
 rm -rf "$HOME/.config/zsh/plugins/"
