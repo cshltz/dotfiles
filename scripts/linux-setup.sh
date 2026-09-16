@@ -12,9 +12,9 @@ done
 if [[ $1 == "deb" ]]; then
     echo "Updating agt-get and installing packages"
     sudo apt-get update
-    sudo apt-get install -y ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard
+    sudo apt-get install -y ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard lazygit nodejs npm
 elif [[ $1 == "arch" ]]; then
-    sudo pacman -S ripgrep ninja gettext cmake base-devel git curl go nodejs npm fd clang wl-clipboard
+    sudo pacman -S ripgrep ninja gettext cmake base-devel git curl go nodejs npm fd clang wl-clipboard lazygit
 else
     echo "No supported architecture provided."
     exit
@@ -25,34 +25,23 @@ if [[ $1 == "deb" ]] && command -v fdfind &>/dev/null && ! command -v fd &>/dev/
     sudo ln -s "$(command -v fdfind)" /usr/local/bin/fd
 fi
 
-echo "Downloading and Installing NVM"
-#nvm + Node LTS (distro Node 12 is too old for codex and fails global installs with EACCES)
-export NVM_DIR="$HOME/.nvm"
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm install --lts
-
-#npm tools (matches win-setup tree-sitter-cli and codex)
-echo "Installing tree-sitter-cli"
-npm install -g tree-sitter-cli
+echo "Installing npm tools (matches win-setup tree-sitter-cli and codex)"
+sudo npm install -g tree-sitter-cli
 echo "Installing codex"
-npm install -g @openai/codex
+sudo npm install -g @openai/codex
 
 echo "Installing copilot cli (npm)"
-#Copilot CLI via npm - avoids the blocked gh.io shortlink (corporate Zscaler MITM)
-npm install -g @github/copilot
+sudo npm install -g @github/copilot
 
 echo "Installing dotnet SDKs (apt)"
-#dotnet SDKs via apt - avoids the blocked dot.net / builds.dotnet.microsoft.com endpoints
-sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
-
-echo "Installing lazygit"
-#lazygit has no noble apt package; prebuilt binary from github.com (not MITM'd on this network)
-#(source build needs Go >= 1.23, noble only ships 1.22)
-mkdir -p "$HOME/.local/bin" "$HOME/tmp"
-lazygitVer=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
-curl -fsSL -o "$HOME/tmp/lazygit.tar.gz" "https://github.com/jesseduffield/lazygit/releases/download/$lazygitVer/lazygit_${lazygitVer#v}_Linux_x86_64.tar.gz"
-tar -xzf "$HOME/tmp/lazygit.tar.gz" -C "$HOME/.local/bin" lazygit
+if [[ $1 == "deb" ]]; then
+    #.NET 8 is EOL and not in the 26.04 main repos - pull it from the dotnet/backports PPA
+    #(also provides .NET 9; 10.0 is in the normal archive)
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository -y ppa:dotnet/backports
+    sudo apt-get update
+    sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
+fi
 
 #update nvim
 echo "Installing nvim"

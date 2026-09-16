@@ -14,7 +14,8 @@
 # Notes:
 #   * Requires Windows 10 2004+/Windows 11. WSL install may require a reboot.
 #   * Run from an elevated prompt if WSL/winget need admin rights.
-#   * Ubuntu-20.04 is NOT recommended (Node 12 / Go 1.18 break the linux-setup).
+#   * Targets Ubuntu 26.04+; older LTS distros are NOT recommended (toolchain versions
+#     in linux-setup are pinned to what resolute ships).
 
 param(
   [string]$Distro = 'Ubuntu-26.04',

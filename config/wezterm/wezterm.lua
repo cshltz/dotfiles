@@ -7,7 +7,7 @@ local default_theme = theme.default_theme
 local tabline_theme = theme.copy(default_theme)
 
 -- config.default_prog = { 'pwsh.exe' }
-config.default_domain = 'WSL:Ubuntu-24.04'
+config.default_domain = 'WSL:Ubuntu-26.04'
 config.leader = { key = ' ', mods = 'CTRL' }
 
 config.initial_rows = 40
