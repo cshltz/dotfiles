@@ -36,16 +36,17 @@ sudo npm install -g @github/copilot
 echo "Installing dotnet SDKs (apt)"
 #dotnet SDK via apt - avoids the blocked dot.net / builds.dotnet.microsoft.com endpoints.
 if [[ $1 == "deb" ]]; then
-    #.NET 8 is EOL and not in the 26.04 main repos - pull it from the dotnet/backports PPA
-    #(also provides .NET 9; 10.0 is in the normal archive)
-    sudo apt-get install -y software-properties-common
-    sudo add-apt-repository -y ppa:dotnet/backports
-    sudo apt-get update
+    #.NET 8 is EOL and not in the 26.04 main repos - add the dotnet/backports PPA on demand
     if ! sudo apt-cache policy dotnet-sdk-8.0 | grep -q 'Candidate:'; then
-        echo "ERROR: dotnet-sdk-8.0 is not in the apt index." >&2
-        echo "The dotnet/backports PPA did not resolve - check that https://ppa.launchpadcontent.net is reachable from this network, then re-run or add the PPA manually." >&2
-    else
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository -y ppa:dotnet/backports
+        sudo apt-get update
+    fi
+    if sudo apt-cache policy dotnet-sdk-8.0 | grep -q 'Candidate:'; then
         sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
+    else
+        echo "ERROR: dotnet-sdk-8.0 is not in the apt index after adding the dotnet/backports PPA." >&2
+        echo "If you saw an SSL cert error above, this network's TLS-inspection root is not trusted in WSL." >&2
     fi
 fi
 
