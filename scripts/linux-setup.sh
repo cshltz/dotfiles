@@ -12,7 +12,17 @@ done
 if [[ $1 == "deb" ]]; then
     echo "Updating agt-get and installing packages"
     sudo apt-get update
-    sudo apt-get install -y ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard lazygit nodejs npm
+    sudo apt-get install -y ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard nodejs npm
+    #lazygit is only packaged in Ubuntu 26.04+ - fall back to the prebuilt tarball on older distros
+    #(keep it out of the install list above: apt fails the whole list if any package is missing)
+    if apt-cache show lazygit >/dev/null 2>&1; then
+        sudo apt-get install -y lazygit
+    else
+        mkdir -p "$HOME/.local/bin" "$HOME/tmp"
+        lazygitVer=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
+        curl -fsSL -o "$HOME/tmp/lazygit.tar.gz" "https://github.com/jesseduffield/lazygit/releases/download/$lazygitVer/lazygit_${lazygitVer#v}_Linux_x86_64.tar.gz"
+        tar -xzf "$HOME/tmp/lazygit.tar.gz" -C "$HOME/.local/bin" lazygit
+    fi
 elif [[ $1 == "arch" ]]; then
     sudo pacman -S ripgrep ninja gettext cmake base-devel git curl go nodejs npm fd clang wl-clipboard lazygit
 else
@@ -37,12 +47,12 @@ echo "Installing dotnet SDKs (apt)"
 #dotnet SDK via apt - avoids the blocked dot.net / builds.dotnet.microsoft.com endpoints.
 if [[ $1 == "deb" ]]; then
     #.NET 8 is EOL and not in the 26.04 main repos - add the dotnet/backports PPA on demand
-    if ! sudo apt-cache policy dotnet-sdk-8.0 | grep -q 'Candidate:'; then
+    if ! apt-cache show dotnet-sdk-8.0 >/dev/null 2>&1; then
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository -y ppa:dotnet/backports
         sudo apt-get update
     fi
-    if sudo apt-cache policy dotnet-sdk-8.0 | grep -q 'Candidate:'; then
+    if apt-cache show dotnet-sdk-8.0 >/dev/null 2>&1; then
         sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
     else
         echo "ERROR: dotnet-sdk-8.0 is not in the apt index after adding the dotnet/backports PPA." >&2
