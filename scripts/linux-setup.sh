@@ -10,6 +10,7 @@ for arg in "$@"; do
 done
 
 if [[ $1 == "deb" ]]; then
+    echo "Updating agt-get and installing packages"
     sudo apt-get update
     sudo apt-get install -y ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard
 elif [[ $1 == "arch" ]]; then
@@ -24,6 +25,7 @@ if [[ $1 == "deb" ]] && command -v fdfind &>/dev/null && ! command -v fd &>/dev/
     sudo ln -s "$(command -v fdfind)" /usr/local/bin/fd
 fi
 
+echo "Downloading and Installing NVM"
 #nvm + Node LTS (distro Node 12 is too old for codex and fails global installs with EACCES)
 export NVM_DIR="$HOME/.nvm"
 curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
@@ -31,12 +33,16 @@ curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 nvm install --lts
 
 #npm tools (matches win-setup tree-sitter-cli and codex)
+echo "Installing tree-sitter-cli"
 npm install -g tree-sitter-cli
+echo "Installing codex"
 npm install -g @openai/codex
 
+echo "Installing copilot cli"
 #Copilot CLI (win-setup installs GitHub.Copilot)
 curl -fsSL https://gh.io/copilot-install | bash
 
+echo "Installing dot sdks"
 #setup dotnet sdks
 mkdir -p "$HOME/tmp"
 curl -fsSL -o "$HOME/tmp/dotnet-install.sh" https://dot.net/v1/dotnet-install.sh
@@ -45,6 +51,7 @@ mkdir -p "$HOME/.dotnet"
 sudo "$HOME/tmp/dotnet-install.sh" --install-dir "$HOME/.dotnet" -channel 8.0 -version latest
 sudo "$HOME/tmp/dotnet-install.sh" --install-dir "$HOME/.dotnet" -channel 10.0 -version latest
 
+echo "Installing lazygit"
 #lazygit install (prebuilt binary: source build needs Go >= 1.23, jammy only ships 1.18)
 mkdir -p "$HOME/.local/bin"
 lazygitVer=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
@@ -52,6 +59,7 @@ curl -fsSL -o "$HOME/tmp/lazygit.tar.gz" "https://github.com/jesseduffield/lazyg
 tar -xzf "$HOME/tmp/lazygit.tar.gz" -C "$HOME/.local/bin" lazygit
 
 #update nvim
+echo "Installing nvim"
 if [[ $1 == "deb" ]]; then
     git_dir=$HOME/.config/install
     sudo rm -rf "$git_dir/neovim"
