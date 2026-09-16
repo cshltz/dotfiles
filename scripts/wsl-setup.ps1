@@ -1,7 +1,7 @@
 # wsl-setup.ps1 - single entry point for a Windows + WSL dev environment.
 #
-#   1. installs WezTerm on the host (winget) and drops the wezterm config in the
-#      Windows location (~/.config/wezterm/)
+#   1. installs QOL tools on the host (winget): WezTerm, lazygit, nvim, plus their
+#      configs and the PowerShell profile
 #   2. ensures WSL2 is enabled
 #   3. installs a Debian-family distro
 #   4. creates the Linux user (same name as the Windows user) and sets /etc/wsl.conf
@@ -19,7 +19,7 @@
 param(
   [string]$Distro = 'Ubuntu-24.04',
   [string]$UserName = '',
-  [switch]$SkipWezterm,
+  [switch]$SkipHostTools,
   [switch]$SkipDistro,
   [switch]$SkipLinuxSetup
 )
@@ -49,21 +49,21 @@ function Write-Header {
   Write-Output "==> $Message"
 }
 
-# ---------------------------------------------------------------- WezTerm (host)
-function Install-Wezterm {
-  if (-not $SkipWezterm) {
-    Write-Header 'WezTerm (host)'
-    if (Get-Command wezterm.exe -ErrorAction SilentlyContinue) {
-      Write-Output 'WezTerm already installed.'
-    } else {
-      if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-        throw 'winget not found - install the App Installer from the Store first.'
-      }
-      Write-Output 'Installing WezTerm'
-      winget install --id wez.wezterm --source winget `
-        --accept-package-agreements --accept-source-agreements
-      if ($LASTEXITCODE -ne 0) { throw 'winget failed to install WezTerm.' }
+# ------------------------------------------------------------ Host QOL tools
+function Install-HostTools {
+  if ($SkipHostTools) { return }
+
+  Write-Header 'WezTerm (host)'
+  if (Get-Command wezterm.exe -ErrorAction SilentlyContinue) {
+    Write-Output 'WezTerm already installed.'
+  } else {
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+      throw 'winget not found - install the App Installer from the Store first.'
     }
+    Write-Output 'Installing WezTerm'
+    winget install --id wez.wezterm --source winget `
+      --accept-package-agreements --accept-source-agreements
+    if ($LASTEXITCODE -ne 0) { throw 'winget failed to install WezTerm.' }
   }
 
   Write-Header 'WezTerm config (host)'
@@ -75,6 +75,59 @@ function Install-Wezterm {
   Copy-Item -Path (Join-Path $RepoRoot 'config\wezterm\*') `
     -Destination $weztermConfigPath -Recurse -Force
   Write-Output "Config copied to $weztermConfigPath"
+
+  Write-Header 'lazygit (host)'
+  if (Get-Command lazygit.exe -ErrorAction SilentlyContinue) {
+    Write-Output 'lazygit already installed.'
+  } else {
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+      throw 'winget not found - install the App Installer from the Store first.'
+    }
+    Write-Output 'Installing lazygit'
+    winget install -e --id JesseDuffield.lazygit --source winget `
+      --accept-package-agreements --accept-source-agreements
+    if ($LASTEXITCODE -ne 0) { throw 'winget failed to install lazygit.' }
+  }
+
+  Write-Header 'nvim (host)'
+  if (Get-Command nvim.exe -ErrorAction SilentlyContinue) {
+    Write-Output 'nvim already installed.'
+  } else {
+    Write-Output 'Installing Neovim'
+    winget install --id Neovim.Neovim --source winget `
+      --accept-package-agreements --accept-source-agreements
+    if ($LASTEXITCODE -ne 0) { throw 'winget failed to install Neovim.' }
+  }
+
+  Write-Header 'PowerShell profile modules (host)'
+  foreach ($m in @('Terminal-Icons', 'Pscx', 'PowerColorLS', 'Posh-Git')) {
+    if (Get-Module -ListAvailable -Name $m) {
+      Write-Output "Module $m already installed."
+    } else {
+      Write-Output "Installing module $m"
+      Install-Module -Name $m -Repository PSGallery -Scope CurrentUser -Force
+    }
+  }
+  Install-Module -Name PSReadLine -Scope CurrentUser -AllowPrerelease -Force
+
+  Write-Header 'PowerShell profile (host)'
+  $pwshProfile = Join-Path $HOME 'Documents\PowerShell\Microsoft.PowerShell_profile.ps1'
+  $pwshProfileDir = Split-Path $pwshProfile
+  if (-not (Test-Path $pwshProfileDir)) {
+    New-Item -ItemType Directory -Path $pwshProfileDir -Force | Out-Null
+  }
+  Copy-Item -Path (Join-Path $RepoRoot 'config\pwsh\profile.ps1') `
+    -Destination $pwshProfile -Force
+  Write-Output "Profile copied to $pwshProfile"
+
+  Write-Header 'nvim config (host)'
+  $nvimConfigPath = Join-Path $HOME 'AppData\Local\nvim'
+  if (Test-Path $nvimConfigPath) {
+    Remove-Item -Path $nvimConfigPath -Recurse -Force
+  }
+  Copy-Item -Path (Join-Path $RepoRoot 'config\nvim') `
+    -Destination $nvimConfigPath -Recurse -Force
+  Write-Output "Config copied to $nvimConfigPath"
 }
 
 # ------------------------------------------------------------------------ WSL 2
@@ -195,14 +248,14 @@ Write-Output "repo:       $RepoRoot"
 Write-Output "distro:     $Distro"
 Write-Output "linux user: $WslUser"
 
-Install-Wezterm
+Install-HostTools
 Ensure-Wsl
 Ensure-Distro
 Bootstrap-LinuxUser
 Invoke-LinuxSetup
 
 Write-Header 'Done'
-Write-Output "1. WezTerm installed on the host with config in ~/.config/wezterm"
+Write-Output "1. Host QOL: WezTerm + lazygit + nvim installed, with nvim config in ~/AppData/Local/nvim, wezterm config in ~/.config/wezterm, and the pwsh profile set up in ~/Documents/PowerShell"
 Write-Output "2. WSL2 + $Distro ready, default Linux user: $WslUser"
 Write-Output "3. linux-setup.sh ran inside WSL (sudo is passwordless for $WslUser)"
 Write-Output "Start the environment:  wsl    (or launch WezTerm and run wsl)"
