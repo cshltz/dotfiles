@@ -28,7 +28,7 @@ fi
 echo "Downloading and Installing NVM"
 #nvm + Node LTS (distro Node 12 is too old for codex and fails global installs with EACCES)
 export NVM_DIR="$HOME/.nvm"
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+curl -fksSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm install --lts
 
@@ -40,12 +40,12 @@ npm install -g @openai/codex
 
 echo "Installing copilot cli"
 #Copilot CLI (win-setup installs GitHub.Copilot)
-curl -fsSL https://gh.io/copilot-install | bash
+curl -fksSL https://gh.io/copilot-install | bash
 
 echo "Installing dot sdks"
 #setup dotnet sdks
 mkdir -p "$HOME/tmp"
-curl -fsSL -o "$HOME/tmp/dotnet-install.sh" https://dot.net/v1/dotnet-install.sh
+curl -fksSL -o "$HOME/tmp/dotnet-install.sh" https://dot.net/v1/dotnet-install.sh
 chmod +x "$HOME/tmp/dotnet-install.sh"
 mkdir -p "$HOME/.dotnet"
 sudo "$HOME/tmp/dotnet-install.sh" --install-dir "$HOME/.dotnet" -channel 8.0 -version latest
@@ -54,8 +54,8 @@ sudo "$HOME/tmp/dotnet-install.sh" --install-dir "$HOME/.dotnet" -channel 10.0 -
 echo "Installing lazygit"
 #lazygit install (prebuilt binary: source build needs Go >= 1.23, jammy only ships 1.18)
 mkdir -p "$HOME/.local/bin"
-lazygitVer=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
-curl -fsSL -o "$HOME/tmp/lazygit.tar.gz" "https://github.com/jesseduffield/lazygit/releases/download/$lazygitVer/lazygit_${lazygitVer#v}_Linux_x86_64.tar.gz"
+lazygitVer=$(curl -fksSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
+curl -fksSL -o "$HOME/tmp/lazygit.tar.gz" "https://github.com/jesseduffield/lazygit/releases/download/$lazygitVer/lazygit_${lazygitVer#v}_Linux_x86_64.tar.gz"
 tar -xzf "$HOME/tmp/lazygit.tar.gz" -C "$HOME/.local/bin" lazygit
 
 #update nvim
@@ -86,7 +86,7 @@ if [[ $skipWezterm -ne 1 ]]; then
 fi
 if [[ $installWezterm =~ ^[Yy]$ ]]; then
     if [[ $1 == "deb" ]]; then
-        curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+        curl -fksSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
         echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
         sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
         sudo apt update
