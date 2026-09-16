@@ -7,7 +7,7 @@
 #
 # Usage:
 #   pwsh -ExecutionPolicy Bypass -File .\scripts\wsl-config.ps1
-#   pwsh -ExecutionPolicy Bypass -File .\scripts\wsl-config.ps1 -Distro Ubuntu-24.04
+#   pwsh -ExecutionPolicy Bypass -File .\scripts\wsl-config.ps1 -Distro Ubuntu-26.04
 
 param(
   [string]$Distro = ''

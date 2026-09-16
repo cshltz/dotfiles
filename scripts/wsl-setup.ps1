@@ -9,7 +9,7 @@
 #
 # Usage:
 #   pwsh -ExecutionPolicy Bypass -File .\scripts\wsl-setup.ps1
-#   pwsh -ExecutionPolicy Bypass -File .\scripts\wsl-setup.ps1 -Distro Ubuntu-24.04
+#   pwsh -ExecutionPolicy Bypass -File .\scripts\wsl-setup.ps1 -Distro Ubuntu-26.04
 #
 # Notes:
 #   * Requires Windows 10 2004+/Windows 11. WSL install may require a reboot.
@@ -17,7 +17,7 @@
 #   * Ubuntu-20.04 is NOT recommended (Node 12 / Go 1.18 break the linux-setup).
 
 param(
-  [string]$Distro = 'Ubuntu-24.04',
+  [string]$Distro = 'Ubuntu-26.04',
   [string]$UserName = '',
   [switch]$SkipHostTools,
   [switch]$SkipDistro,
