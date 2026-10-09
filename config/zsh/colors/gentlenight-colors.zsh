@@ -43,6 +43,7 @@ typeset -gA ZSH_HIGHLIGHT_STYLES
 ## Classes
 ## Comments
 ZSH_HIGHLIGHT_STYLES[comment]='fg=#7f848e'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#7f848e'
 ## Constants
 ## Entitites
 ## Functions/methods

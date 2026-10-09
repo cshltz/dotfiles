@@ -39,6 +39,8 @@ rm -rf "$HOME/.config/zsh/plugins/"
 
 #zsh-syntax-highlighting (sourced from $ZDOTDIR/plugins/... in .zshrc)
 git clone "https://github.com/zsh-users/zsh-syntax-highlighting.git" "$HOME/.config/zsh/plugins/zsh-syntax-highlighting/"
+git clone "https://github.com/zsh-users/zsh-autosuggestions" "$HOME/.config/zsh/plugins/zsh-autosuggestions"
 
-#remove unneeded git repo
+#remove unneeded git repos
 rm -rf "$HOME/.config/zsh/plugins/zsh-syntax-highlighting/.git"
+rm -rf "$HOME/.config/zsh/plugins/zsh-autosuggestions/.git"

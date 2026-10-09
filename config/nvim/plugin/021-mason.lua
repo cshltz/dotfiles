@@ -1,10 +1,8 @@
 vim.pack.add { 'https://github.com/mason-org/mason.nvim' }
 vim.pack.add { 'https://github.com/mason-org/mason-lspconfig.nvim' }
 vim.pack.add { 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' }
-vim.pack.add { 'https://github.com/j-hui/fidget.nvim' }
 
 require('mason').setup {}
-require('fidget').setup {}
 
 local servers = {
   bashls = {},
@@ -23,6 +21,7 @@ local servers = {
   pyright = {},
   ruff = {},
   rust_analyzer = {},
+  ts_ls = {},
 }
 
 local debuggers = { 'delve', 'codelldb' }

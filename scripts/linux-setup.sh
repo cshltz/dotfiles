@@ -12,7 +12,7 @@ done
 if [[ $1 == "deb" ]]; then
     echo "Updating agt-get and installing packages"
     sudo apt-get update
-    sudo apt-get install -y ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard nodejs npm
+    sudo apt-get install -y cargo ripgrep ninja-build gettext cmake build-essential git curl golang-go fd-find clang unzip zstd file wl-clipboard nodejs npm
     #lazygit is only packaged in Ubuntu 26.04+ - fall back to the prebuilt tarball on older distros
     #(keep it out of the install list above: apt fails the whole list if any package is missing)
     if apt-cache show lazygit >/dev/null 2>&1; then
@@ -129,6 +129,8 @@ rm -rf "$HOME/.config/zsh/plugins/"
 
 #zsh-syntax-highlighting (sourced from $ZDOTDIR/plugins/... in .zshrc)
 git clone "https://github.com/zsh-users/zsh-syntax-highlighting.git" "$HOME/.config/zsh/plugins/zsh-syntax-highlighting/"
+git clone "https://github.com/zsh-users/zsh-autosuggestions" "$HOME/.config/zsh/plugins/zsh-autosuggestions"
 
-#remove unneeded git repo
+#remove unneeded git repos
 rm -rf "$HOME/.config/zsh/plugins/zsh-syntax-highlighting/.git"
+rm -rf "$HOME/.config/zsh/plugins/zsh-autosuggestions/.git"

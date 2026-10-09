@@ -10,7 +10,7 @@ alias vi='nvim'
 alias cls='clear'
 
 function cdd(){
-    local basePath="/mnt/d/dev/proj"
+    local basePath="$HOME/dev"
     if [[ -d "$basePath/$1" ]]; then
         cd "$basePath/$1"
     else

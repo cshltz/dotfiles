@@ -13,7 +13,7 @@ config.leader = { key = ' ', mods = 'CTRL' }
 config.initial_rows = 40
 config.initial_cols = 160
 config.font_size = 11
-config.font = wezterm.font 'Cascadia Code NF'
+config.font = wezterm.font 'CaskaydiaCove Nerd Font'
 
 config.window_background_opacity = 1.0
 

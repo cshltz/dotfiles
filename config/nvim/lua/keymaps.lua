@@ -41,4 +41,50 @@ vim.keymap.set('n', '<leader>ls', '<cmd>lsp start<cr>', { desc = 'Start' })
 vim.keymap.set('n', '<leader>le', '<cmd>lsp enable<cr>', { desc = 'Enable' })
 vim.keymap.set('n', '<leader>ld', '<cmd>lsp disable<cr>', { desc = 'Disable' })
 
+-- UI toggles
+local function toggle_option(opt)
+  vim.opt[opt] = not vim.opt[opt]:get()
+end
+
+vim.keymap.set('n', '<leader>tus', function()
+  toggle_option 'spell'
+end, { desc = 'Spelling' })
+vim.keymap.set('n', '<leader>tuw', function()
+  toggle_option 'wrap'
+end, { desc = 'Wrap' })
+vim.keymap.set('n', '<leader>tuL', function()
+  toggle_option 'relativenumber'
+end, { desc = 'Relative Number' })
+vim.keymap.set('n', '<leader>tul', function()
+  toggle_option 'number'
+end, { desc = 'Line Number' })
+vim.keymap.set('n', '<leader>tuc', function()
+  vim.opt.conceallevel = vim.o.conceallevel > 0 and 0 or 2
+end, { desc = 'Conceal' })
+vim.keymap.set('n', '<leader>tud', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = 'Diagnostics' })
+vim.keymap.set('n', '<leader>tuh', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = 'Inlay Hints' })
+vim.keymap.set('n', '<leader>tuT', function()
+  if vim.b.ts_highlight then
+    vim.treesitter.stop()
+    vim.b.ts_highlight = false
+  else
+    vim.treesitter.start()
+    vim.b.ts_highlight = true
+  end
+end, { desc = 'Treesitter' })
+vim.keymap.set('n', '<leader>tug', function()
+  vim.g.miniindentscope_disable = not vim.g.miniindentscope_disable
+  local scope = require 'mini.indentscope'
+  if vim.g.miniindentscope_disable then
+    scope.undraw()
+  else
+    scope.draw()
+  end
+  vim.notify('Indent Scope ' .. (vim.g.miniindentscope_disable and 'off' or 'on'))
+end, { desc = 'Indent Scope' })
+
 -- vim: ts=2 sts=2 sw=2 et

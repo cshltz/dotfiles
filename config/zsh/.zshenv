@@ -3,6 +3,7 @@ export XDG_DATA_HOME="$XDG_CONFIG_HOME/local/share"
 export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
 
 export PATH=$PATH:"$HOME/.dotnet"
+export PATH=$PATH:"$HOME/.dotnet/tools"
 export PATH=$PATH:"$HOME/go/bin"
 export PATH=$PATH:"$HOME/.local/bin"
 
