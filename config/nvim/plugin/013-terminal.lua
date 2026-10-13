@@ -34,7 +34,8 @@ require('toggleterm').setup {
   start_in_insert = true,
   persist_size = true,
   persist_mode = true,
-  shade_terminals = true,
+  auto_scroll = false,
+  shade_terminals = false,
   on_open = map_escape_toggle,
 }
 
